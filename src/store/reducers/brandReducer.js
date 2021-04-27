@@ -1,9 +1,5 @@
 const initState = {
-    brands: [
-        { id: 1, title: 'brand 1', content: 'brand 1 content' },
-        { id: 2, title: 'brand 2', content: 'brand 2 content' },
-        { id: 3, title: 'brand 3', content: 'brand 3 content' },
-    ]
+    brands: []
 };
 
 const brandReducer = ( state = initState, action) => {
@@ -14,6 +10,14 @@ const brandReducer = ( state = initState, action) => {
         }
         case 'CREATE_BRAND_ERROR': {
             console.log('error creating brand', action.err);
+            return state;
+        }
+        case 'EDIT_BRAND': {
+            console.log('edited brand', action.brand);
+            return state;
+        }
+        case 'EDIT_BRAND_ERROR': {
+            console.log('error editing brand', action.err);
             return state;
         }
         default: {

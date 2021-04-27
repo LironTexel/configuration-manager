@@ -41,9 +41,16 @@ const SignUp = () => {
                     error={errors['email']}
                     label="Email"
                     variant="outlined"
-                    helperText={errors.email && "Email is mandatory"}
+                    helperText={errors?.email?.message}
                     required
-                    {...register("email", { required: true, maxLength: 20 })}/>
+                    {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                            value: /\S+@\S+.\S+/,
+                            message: "Entered value does not match email format"
+                        }
+                    })}
+                    type="email"/>
                 <br/>
                 <br/>
                 <TextField

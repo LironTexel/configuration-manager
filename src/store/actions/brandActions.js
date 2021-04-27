@@ -15,3 +15,17 @@ export const createBrand = (brand) => {
         })
     }
 }
+
+export const editBrand = (brand) => {
+    return (dispatch, getState, getFirebase ) => {
+        // async call to DB
+        const firestore = getFirebase().firestore();
+        firestore.collection('brands').doc(brand.id).update({
+            ...brand,
+        }).then(() => {
+            dispatch({ type: 'EDIT_BRAND', brand })
+        }).catch((err) => {
+            dispatch({ type: 'EDIT_BRAND_ERROR', err })
+        })
+    }
+}
