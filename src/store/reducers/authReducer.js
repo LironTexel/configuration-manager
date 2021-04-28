@@ -20,6 +20,7 @@ const authReducer = ( state = initState, action) => {
         }
         case 'LOGOUT_SUCCESS': {
             console.log('success logging out');
+            // state = undefined;
             return state;
         }
         case 'LOGOUT_ERROR': {

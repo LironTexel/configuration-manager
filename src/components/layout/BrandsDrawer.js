@@ -1,17 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
-// import BrandSummary from "../brands/BrandSummary";
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { CssBaseline, Drawer,
-    List, ListItem, ListItemIcon, ListItemText,
-    Divider, IconButton } from '@material-ui/core';
+import {Link} from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    CssBaseline, Drawer,
+    List, ListItem, ListItemText,
+    Divider, IconButton, Typography, Box
+} from '@material-ui/core';
 import { drawerWidth } from "../../consts";
 import {useDispatch, useSelector} from "react-redux";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import MailIcon from '@material-ui/icons/Mail';
 import clsx from "clsx";
 import {firestoreConnect} from "react-redux-firebase";
+import { Colors } from "../../styles/colors";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         flexShrink: 0,
     },
     drawerPaper: {
+        background: Colors.DARK_GREY,
         width: drawerWidth,
     },
     drawerHeader: {
@@ -32,22 +33,46 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
+    brandLink: {
+        textDecoration: 'underline transparent', //override link underline
+        color: 'inherit'
+    },
     brandItem: {
-        color: 'black',
-        textDecoration: 'none',
+        color: Colors.WHITE,
+        whiteSpace: 'nowrap',
         '&:hover': {
-            color: 'blue',
-        }
+            backgroundImage: `linear-gradient(to right, ${Colors.DARK_TEAL}, transparent)`,
+        },
+    },
+    brandItemTextSecondary: {
+        color: Colors.GREY,
+    },
+    toolbarDivider: {
+        background: Colors.TEAL,
+        height: '2px',
+    },
+    brandDivider: {
+        background: Colors.MID_TEAL,
     },
     isActive: {
         background: 'red',
+    },
+    chevron: {
+        opacity: 0.8,
+        transition: 'transition 0.5s opacity 0.2s',
+        '& .MuiSvgIcon-root': {
+            color: Colors.LIGHT_TEAL,
+        },
+        '&:hover': {
+            opacity: 1,
+            background: Colors.BLACK,
+        },
     }
 }));
 
 const BrandsDrawer = () => {
     // const { id } = useParams(); //TODO add active class to selected item
     const classes = useStyles();
-    const theme = useTheme();
     const dispatch = useDispatch();
     const isOpen = useSelector((state) => state.misc.isBrandsDrawerOpen);
     const brands = useSelector((state) => state?.firestore?.ordered?.brands);
@@ -67,21 +92,35 @@ const BrandsDrawer = () => {
                 classes={{ paper: classes.drawerPaper }}
             >
                 <div className={classes.drawerHeader}>
-                    <IconButton onClick={toggleDrawer}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                    <IconButton onClick={toggleDrawer} className={classes.chevron}>
+                        <ChevronLeftIcon fontSize="medium"/>
                     </IconButton>
                 </div>
-                <Divider />
+                <Divider className={classes.toolbarDivider}/>
                 <List>
                     { brands && brands.map(brand => (
-                        <Link to={'/brands/' + brand.id} key={ brand.id }>
-                            <ListItem button className={clsx(classes.brandItem, {
-                                // [classes.isActive]: brand.id !== id,
+                        <Link className={classes.brandLink}
+                              to={'/brands/' + brand.id} key={ brand.id }>
+                            <ListItem button
+                                      onClick={toggleDrawer}
+                                      className={clsx(classes.brandItem, {
+                                // [classes.isActive]: (brand.id === id),
                             })}>
-                                {/*<BrandSummary brand={ brand }/>*/}
-                                <ListItemIcon><MailIcon /></ListItemIcon>
-                                <ListItemText primary={brand.name} secondary={brand.id}/>
+                                {/*<ListItemIcon><StoreIcon /></ListItemIcon>*/}
+                                <ListItemText textOverflow="ellipsis"
+                                              primary={<Typography>{brand.name}</Typography>}
+                                              secondary={
+                                                  <Box component="div"
+                                                       className={classes.brandItemTextSecondary}
+                                                       textOverflow="ellipsis"
+                                                       overflow="hidden">
+                                                  ID: {brand.id}
+                                              </Box>}
+                                />
                             </ListItem>
+                            <Divider className={classes.brandDivider}
+                                     // variant="inset"
+                            />
                         </Link>
                     ))}
                 </List>

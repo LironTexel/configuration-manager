@@ -4,24 +4,36 @@ import clsx from 'clsx';
 import LoggedInLinks from "./LoggedInLinks";
 import LoggedOutLinks from "./LoggedOutLinks";
 import {useDispatch, useSelector} from "react-redux";
-// import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { Colors } from '../../../styles/colors';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { CssBaseline, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { drawerWidth } from "../../../consts";
 
-// const useStyles = makeStyles((theme: Theme) =>
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
-            justifyContent: 'flex-between'
+        },
+        appTitle: {
+            color: Colors.WHITE,
+            textDecoration: 'none',
+            alignSelf: 'center'
+        },
+        toolbar: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            '& div': {
+                display: 'flex',
+            }
         },
         appBar: {
             transition: theme.transitions.create(['margin', 'width'], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
             }),
+            background: Colors.BLACK,
+            borderBottom: `3px solid ${Colors.TEAL}`
         },
         appBarShift: {
             width: `calc(100% - ${drawerWidth}px)`,
@@ -31,8 +43,18 @@ const useStyles = makeStyles((theme) =>
                 duration: theme.transitions.duration.enteringScreen,
             }),
         },
+        greeting: {
+            alignSelf: 'center',
+            marginRight: theme.spacing(2),
+        },
         menuButton: {
             marginRight: theme.spacing(2),
+            opacity: 0.8,
+            transition: 'transition 0.5s opacity 0.2s',
+            '&:hover': {
+                opacity: 1,
+                background: Colors.DARK_GREY,
+            },
         },
         hide: {
             display: 'none',
@@ -45,7 +67,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state?.firebase?.auth);
     const isOpen = useSelector((state) => state.misc.isBrandsDrawerOpen);
-    const uid = auth?.uid;
+    const isLoggedIn = auth?.uid;
     const profile = useSelector((state) => state?.firebase?.profile);
 
     const toggleDrawer = () => {
@@ -61,27 +83,29 @@ const Navbar = () => {
                     [classes.appBarShift]: isOpen,
                 })}
             >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={toggleDrawer}
-                        edge="start"
-                        className={clsx(classes.menuButton, isOpen && classes.hide)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Link to='/' className="brand-logo">
-                        <Typography variant="h5" noWrap>
-                            Configuration manager
+                <Toolbar className={classes.toolbar}>
+                    <div>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={toggleDrawer}
+                            edge="start"
+                            className={clsx(classes.menuButton, isOpen && classes.hide)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Link to='/' className={classes.appTitle}>
+                            <Typography variant="h5" noWrap>
+                                Configuration manager
+                            </Typography>
+                        </Link>
+                    </div>
+                    <div>
+                        <Typography className={classes.greeting} variant="subtitle1" noWrap>
+                            Hello {isLoggedIn ? profile.username : 'guest'}!
                         </Typography>
-                    </Link>
-                    <Typography variant="subtitle1" noWrap>
-                        hello {uid ? profile.username : 'guest'}!
-                    </Typography>
-                    { auth.isLoaded &&
-                        (uid ?  <LoggedInLinks/> : <LoggedOutLinks/>)
-                    }
+                        { auth.isLoaded && (isLoggedIn ?  <LoggedInLinks/> : <LoggedOutLinks/>)}
+                    </div>
                 </Toolbar>
             </AppBar>
         </div>
