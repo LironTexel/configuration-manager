@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {firestoreConnect} from "react-redux-firebase";
 import {Redirect, useParams } from "react-router-dom";
 import moment from "moment";
 import {Button, TextField, Typography } from "@material-ui/core";
@@ -156,4 +155,4 @@ const EditBrand = () => {
     )
 }
 
-export default firestoreConnect([{ collection: 'brands' }])(EditBrand);
+export default EditBrand;

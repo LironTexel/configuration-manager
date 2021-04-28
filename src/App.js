@@ -7,6 +7,8 @@ import EditBrand from "./components/brands/EditBrand";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import CreateBrand from "./components/brands/CreateBrand";
+import {firestoreConnect} from "react-redux-firebase";
+// import {useSelector} from "react-redux";
 
 function App() {
 
@@ -14,7 +16,6 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <header className="App-header">
-            {/*<Navbar/>*/}
             <Layout>
                 <Switch>
                     <Route exact path='/' component={ Dashboard }/>
@@ -30,4 +31,7 @@ function App() {
   );
 }
 
-export default App;
+export default firestoreConnect([
+    { collection: 'brands', orderBy: ['name', 'asc'] },
+    { collection: 'notifications', limit: 3, orderBy: ['time', 'desc'] }
+])(App);

@@ -10,7 +10,6 @@ import { drawerWidth } from "../../consts";
 import {useDispatch, useSelector} from "react-redux";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import clsx from "clsx";
-import {firestoreConnect} from "react-redux-firebase";
 import { Colors } from "../../styles/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +75,8 @@ const BrandsDrawer = () => {
     const dispatch = useDispatch();
     const isOpen = useSelector((state) => state.misc.isBrandsDrawerOpen);
     const brands = useSelector((state) => state?.firestore?.ordered?.brands);
+    const firestore = useSelector((state) => state?.firestore);
+    console.log({firestore})
 
     const toggleDrawer = () => {
         dispatch({ type: 'TOGGLE_DRAWER' });
@@ -129,6 +130,4 @@ const BrandsDrawer = () => {
     )
 }
 
-export default firestoreConnect([
-    { collection: 'brands', orderBy: ['name', 'asc'] }
-])(BrandsDrawer);
+export default BrandsDrawer;
