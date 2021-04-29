@@ -1,19 +1,45 @@
 import React, {useEffect, useState} from "react";
-import {Button, TextField} from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import firebase from "firebase/app";
-import WallpaperTwoToneIcon from "@material-ui/icons/WallpaperTwoTone";
+import PanoramaTwoToneIcon from '@material-ui/icons/PanoramaTwoTone';
 import {makeStyles} from "@material-ui/core/styles";
+import {Colors} from "../../styles/colors";
 
 const useStyles = makeStyles(() => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
     imagePreview: {
-        maxWidth: '200px',
-        maxHeight: '200px',
+        width: '200px',
+        height: '200px',
+        border: `1px solid ${Colors.GREY}`,
+        borderRadius: '10px',
+        padding: '5px',
+        '&::before': {
+            content: '"Image preview"',
+            display: 'block',
+            marginTop: -20,
+            background: 'white',
+            width: 'fit-content',
+            padding: '5px'
+            // width: '150px'
+        },
+        '& > img' : {
+            maxWidth: '180px',
+            maxHeight: '180px',
+        },
+        '& .MuiSvgIcon-root': {
+            height: '180px',
+            width: '180px',
+            color: Colors.GREY
+        },
     },
 }));
 
 const FileField = (props) => {
-    const { input, uploadDirectoryPath, onChange } = props;
-    const [ fileToUpload, setFileToUpload ] = useState(null);
+    const { input, uploadDirectoryPath, onChange, isImage, fileName } = props;
     const [ fileUrl, setFileUrl ] = useState('');
     const classes = useStyles();
 
@@ -21,7 +47,8 @@ const FileField = (props) => {
             setFileUrl(input);
     }, [input]);
 
-    const uploadFile = async () => {
+    const uploadFile = async (e) => {
+        const fileToUpload = e.target.files[0];
         if (fileToUpload) {
             const storageRef = firebase.storage().ref();
             const fileRef = storageRef.child(`${uploadDirectoryPath}/${fileToUpload.name}`);
@@ -33,34 +60,34 @@ const FileField = (props) => {
     }
 
     return (
-            <div className={"file-upload"}>
+            <div className={classes.root}>
+                { isImage &&
+                    <div className={classes.imagePreview}>
+                        { fileUrl ? <img alt='upload' src={fileUrl}/> : <PanoramaTwoToneIcon/> }
+                    </div>
+                }
+
                 <Button
                     variant="contained"
                     component="label"
-                    onClick={uploadFile}
-                >Upload File</Button>
-                <input type="file"
-                       onChange={e => setFileToUpload(e.target.files[0])}/>
-                <br/><br/>
+                >
+                    Upload { fileName || 'file'}
+                    <input
+                        type="file"
+                        onChange={uploadFile}
+                        hidden
+                    />
+                </Button>
 
-                <TextField
-                    key={fileUrl}
-                    value={fileUrl || ''}
-                    variant="outlined"
-                    label="File url preview"
-                    fullWidth
-                    disabled
-                    onChange={(val) => {
-                        console.log({val});
-                        onChange(val)
-                    }}/>
+                {/*    <TextField*/}
+                {/*        key={fileUrl}*/}
+                {/*        value={fileUrl || ''}*/}
+                {/*        variant="outlined"*/}
+                {/*        label="File url preview"*/}
+                {/*        fullWidth*/}
+                {/*        disabled*/}
+                {/*        onChange={onChange}/>*/}
 
-                <div>preview
-                    { fileUrl ? <img className={classes.imagePreview}
-                                     alt='brand-logo' src={fileUrl}/>
-                        : <WallpaperTwoToneIcon/>
-                    }
-                </div>
             </div>
     )
 }
