@@ -4,13 +4,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     CssBaseline, Drawer,
     List, ListItem, ListItemText,
-    Divider, IconButton, Typography, Box
+    Divider, IconButton, Typography, Box, ListItemIcon
 } from '@material-ui/core';
 import { drawerWidth } from "../../consts";
 import {useDispatch, useSelector} from "react-redux";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import clsx from "clsx";
 import { Colors } from "../../styles/colors";
+import StoreMallDirectoryTwoToneIcon from '@material-ui/icons/StoreMallDirectoryTwoTone';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,8 +41,19 @@ const useStyles = makeStyles((theme) => ({
         color: Colors.WHITE,
         whiteSpace: 'nowrap',
         '&:hover': {
-            backgroundImage: `linear-gradient(to right, ${Colors.DARK_TEAL}, transparent)`,
+            // background: Colors.BLACK,
+            backgroundImage: `linear-gradient(to right, ${Colors.DARK_TEAL}, transparent)`
+
         },
+    },
+    brandItemLogo: {
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+    },
+    brandDefaultLogo: {
+        color: Colors.MID_TEAL,
+        marginLeft: theme.spacing(1),
     },
     brandItemTextSecondary: {
         color: Colors.GREY,
@@ -107,7 +119,12 @@ const BrandsDrawer = () => {
                                       className={clsx(classes.brandItem, {
                                 // [classes.isActive]: (brand.id === id),
                             })}>
-                                {/*<ListItemIcon><StoreIcon /></ListItemIcon>*/}
+                                <ListItemIcon>
+                                    {
+                                        brand.logoUrl ? <img className={classes.brandItemLogo} src={brand.logoUrl} alt={"brand-logo"}/>
+                                        : <StoreMallDirectoryTwoToneIcon className={classes.brandDefaultLogo}/>
+                                    }
+                                </ListItemIcon>
                                 <ListItemText textOverflow="ellipsis"
                                               primary={<Typography>{brand.name}</Typography>}
                                               secondary={
@@ -120,7 +137,7 @@ const BrandsDrawer = () => {
                                 />
                             </ListItem>
                             <Divider className={classes.brandDivider}
-                                     // variant="inset"
+                                     variant="inset"
                             />
                         </Link>
                     ))}
