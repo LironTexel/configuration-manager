@@ -2,19 +2,24 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useParams } from "react-router-dom";
 import moment from "moment";
-import {Button, Grid, Paper, TextField, Typography} from "@material-ui/core";
+import {Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import {editBrand} from "../../store/actions/brandActions";
 import {makeStyles} from "@material-ui/core/styles";
 import FileField from "../shared/FileField";
 import clsx from "clsx";
+import ManageCategories from "./editBrand/ManageCategories";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
     },
+    header: {
+        padding: theme.spacing(0, 1, 2),
+    }
 }));
+
 
 const EditBrand = () => {
     const { id } = useParams()
@@ -23,16 +28,15 @@ const EditBrand = () => {
     const auth = useSelector((state) => state?.firebase?.auth);
     const { control, handleSubmit, formState: { errors }, setValue } = useForm();
     const classes = useStyles();
+    console.log({brands})
 
     const [ brand, setBrand ] = useState({});
 
     useEffect(() => {
         if (id) {
             setBrand(brands?.[id]);
-            setValue( 'name', brands?.[id].name || '');
-            setValue( 'content', brands?.[id].content || '');
-            setValue( 'slogan', brands?.[id].slogan || '' );
-            setValue( 'logoUrl', brands?.[id].logoUrl || '');
+            setValue( 'name', brands?.[id]?.name || '');
+            setValue( 'logoUrl', brands?.[id]?.logoUrl || '');
         }
     }, [brands, id, setValue]);
 
@@ -48,15 +52,17 @@ const EditBrand = () => {
             { !brand && <Typography>loading brand...</Typography> }
             { brand &&
                 <div className={clsx(classes.root, "grid-container")}>
-                    <Typography variant={"h6"}>Brand {brand.name}</Typography>
-                    <Typography color={"textSecondary"}>Created at - { moment(brand.createdAt).calendar() }</Typography>
+                    <div className={classes.header}>
+                        <Typography variant={"h6"}>Brand {brand.name}</Typography>
+                        <Typography color={"textSecondary"}>Created at - { moment(brand.createdAt).calendar() }</Typography>
+                    </div>
                     <form action=""
                           noValidate
                           autoComplete="off"
                           onSubmit={handleSubmit(onSubmit)}>
 
                         <Grid container spacing={3}>
-                            <Grid item xs={8}>
+                            <Grid item xs={9}>
                                 <Paper className={classes.paper}>
                                     <Controller
                                         render={({ field: {onChange} }) =>
@@ -75,11 +81,11 @@ const EditBrand = () => {
                                         name='name'
                                         control={control}
                                     />
-                                    <Typography>Manage categories</Typography>
+                                    <ManageCategories brand={brand}/>
 
                                 </Paper>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={3}>
                                 <Paper className={classes.paper}>
                                     <Controller
                                         render={({ field: {onChange} }) =>
@@ -87,7 +93,7 @@ const EditBrand = () => {
                                                        isImage
                                                        fileName="logo"
                                                        onChange={onChange}
-                                                       input={brands?.[id].logoUrl}/>
+                                                       input={brands?.[id]?.logoUrl}/>
                                         }
                                         name='logoUrl'
                                         control={control}

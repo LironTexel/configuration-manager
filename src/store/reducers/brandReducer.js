@@ -20,6 +20,14 @@ const brandReducer = ( state = initState, action) => {
             console.log('error editing brand', action.err);
             return state;
         }
+        case 'ADD_CATEGORY': {
+            console.log('added category', action.brand);
+            return state;
+        }
+        case 'ADD_CATEGORY_ERROR': {
+            console.log('error adding category brand', action.err);
+            return state;
+        }
         default: {
             console.log('unknown action', action.type);
             return state;

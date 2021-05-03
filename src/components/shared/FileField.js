@@ -5,16 +5,18 @@ import PanoramaTwoToneIcon from '@material-ui/icons/PanoramaTwoTone';
 import {makeStyles} from "@material-ui/core/styles";
 import {Colors} from "../../styles/colors";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
     },
     imagePreview: {
-        width: '200px',
-        height: '200px',
-        border: `1px solid ${Colors.GREY}`,
+        maxWidth: '200px',
+        maxHeight: '200px',
+        height: '100%',
+        width: '100%',
+        border: `1px solid ${Colors.MID_GREY}`,
         borderRadius: '10px',
         padding: '5px',
         '&::before': {
@@ -31,11 +33,14 @@ const useStyles = makeStyles(() => ({
             maxHeight: '180px',
         },
         '& .MuiSvgIcon-root': {
-            height: '180px',
-            width: '180px',
+            height: '100%',
+            width: '100%',
             color: Colors.GREY
         },
     },
+    uploadButton: {
+        margin: theme.spacing(2, 0, 0)
+    }
 }));
 
 const FileField = (props) => {
@@ -70,6 +75,7 @@ const FileField = (props) => {
                 <Button
                     variant="contained"
                     component="label"
+                    className={classes.uploadButton}
                 >
                     Upload { fileName || 'file'}
                     <input
