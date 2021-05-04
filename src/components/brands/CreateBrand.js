@@ -5,6 +5,8 @@ import {createBrand} from "../../store/actions/brandActions";
 import { useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { CreateBrandSchema } from '../../models/createBrand.model'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,19 +30,19 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateBrand = (props) => {
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors }, control } = useForm();
-    const auth = useSelector((state) => state?.firebase?.auth);
     const brands = useSelector((state) => state?.firestore?.data?.brands);
+
+    const { handleSubmit, formState: { errors }, control } = useForm({
+        resolver: yupResolver(CreateBrandSchema(brands))
+    });
+
+    const auth = useSelector((state) => state?.firebase?.auth);
     const classes = useStyles();
 
     const onSubmit = (data) => {
         const { name, id } = data;
-        console.log({name});
-        console.log({id});
-        if (id && name) {
-            dispatch(createBrand({ id, name }));
-            props.history.push('/'); // TODO redirect only when success
-        }
+        dispatch(createBrand({ id, name }));
+        props.history.push('/'); // TODO redirect only when success
     };
 
     if (!auth.uid) return <Redirect to='/login'/>;
@@ -52,35 +54,23 @@ const CreateBrand = (props) => {
                 <Grid item xs={6}>
                     <Paper className={classes.paper}>
 
-                        <form action=""
-                              noValidate
+                        <form noValidate
                               autoComplete="off"
                               onSubmit={handleSubmit(onSubmit)}>
-
                             <div className={classes.formBody}>
                                 <Controller
                                     name='id'
                                     control={control}
-                                    render={({ field: {onChange, value} }) =>
+                                    render={({ field: {onChange} }) =>
                                         <TextField
                                             error={errors['id']}
                                             className={classes.input}
                                             label="Brand ID"
                                             variant="outlined"
                                             helperText={errors.id?.message}
-                                            value={value}
                                             onChange={onChange}
                                             required
-                                            {...register('id', {
-                                                validate: {
-                                                    uniqueId: value => {
-                                                        return !brands[value] || "Brand ID already exists"
-                                                    },
-                                                    idLength: value => {
-                                                        return value?.length === 6 || "ID should be 6 characters long"
-                                                    }
-                                                }
-                                            })}
+
                                         />
                                     }
                                 />
@@ -88,17 +78,15 @@ const CreateBrand = (props) => {
                                 <Controller
                                     name='name'
                                     control={control}
-                                    render={({ field: {onChange, value} }) =>
+                                    render={({ field: {onChange} }) =>
                                         <TextField
                                             error={errors['name']}
                                             className={classes.input}
                                             label="Brand name"
                                             variant="outlined"
-                                            helperText={errors.name && "Name is required"}
+                                            helperText={errors.name?.message}
                                             onChange={onChange}
-                                            value={value}
                                             required
-                                            {...register('name', { required: true })}
                                         />
                                     }
                                 />
