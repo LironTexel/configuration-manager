@@ -7,6 +7,7 @@ import {Redirect} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateUserSchema} from "../../models/createUser.model";
+import {Colors} from "../../styles/colors";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -25,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     },
     createButton: {
         marginTop: theme.spacing(2)
+    },
+    error: {
+        color: Colors.RED
     }
 }));
 
@@ -113,7 +117,7 @@ const SignUp = () => {
                                 type="submit">Sign Up</Button>
                         </form>
                         {authError &&
-                            <div className="auth-error">
+                            <div className={classes.error}>
                                 <p>{authError}</p>
                             </div>
                         }
