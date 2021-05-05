@@ -1,21 +1,45 @@
 import React from 'react';
-import {Button, CssBaseline, TextField, Typography} from '@material-ui/core';
-import { useForm } from "react-hook-form";
+import {Button, CssBaseline, Grid, Paper, TextField, Typography} from '@material-ui/core';
+import {Controller, useForm} from "react-hook-form";
 import { signUpUser } from "../../store/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import {Redirect} from "react-router-dom";
+import {makeStyles} from "@material-ui/core/styles";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {CreateUserSchema} from "../../models/createUser.model";
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+    },
+    title: {
+        padding: theme.spacing(0, 1, 2)
+    },
+    formBody: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    input: {
+        margin: theme.spacing(1),
+    },
+    createButton: {
+        marginTop: theme.spacing(2)
+    }
+}));
 
 const SignUp = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
     const authError = useSelector((state) => state?.auth?.authError);
     const auth = useSelector((state) => state?.firebase?.auth);
+    const classes = useStyles();
+    const { handleSubmit, formState: { errors }, control } = useForm({
+        resolver: yupResolver(CreateUserSchema())
+    });
 
     const onSubmit = (data) => {
         const { email, password, username } = data;
-        console.log(password);
-        console.log(username);
-        console.log(email);
+        console.log({data});
         dispatch(signUpUser({ email, password, username }));
     };
 
@@ -23,55 +47,79 @@ const SignUp = () => {
     else return (
         <div>
             <CssBaseline />
-            <Typography>User sign up</Typography>
-            <form action=""
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    error={errors['username']}
-                    label="Username"
-                    variant="outlined"
-                    helperText={errors.username && "Username is mandatory"}
-                    required
-                    {...register("username", { required: true, maxLength: 20 })}/>
-                <br/>
-                <br/>
-                <TextField
-                    error={errors['email']}
-                    label="Email"
-                    variant="outlined"
-                    helperText={errors?.email?.message}
-                    required
-                    {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                            value: /\S+@\S+.\S+/,
-                            message: "Entered value does not match email format"
+            <Typography variant={"h6"} className={classes.title}>User sign up</Typography>
+
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                        <form noValidate
+                              autoComplete="off"
+                              onSubmit={handleSubmit(onSubmit)}>
+                            <div className={classes.formBody}>
+                                <Controller
+                                    name='username'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TextField
+                                            error={errors['username']}
+                                            className={classes.input}
+                                            label="Username"
+                                            variant="outlined"
+                                            helperText={errors.username?.message}
+                                            onChange={onChange}
+                                            required
+
+                                        />
+                                    }
+                                />
+
+                                <Controller
+                                    name='email'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TextField
+                                            error={errors['email']}
+                                            className={classes.input}
+                                            label="Email"
+                                            variant="outlined"
+                                            helperText={errors.email?.message}
+                                            onChange={onChange}
+                                            required
+
+                                        />
+                                    }
+                                />
+
+                                <Controller
+                                    name='password'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TextField
+                                            error={errors['password']}
+                                            className={classes.input}
+                                            label="Password"
+                                            variant="outlined"
+                                            type="password"
+                                            helperText={errors.password?.message}
+                                            onChange={onChange}
+                                            required
+                                        />
+                                    }
+                                />
+                            </div>
+                            <Button
+                                color="primary"
+                                className={classes.createButton}
+                                type="submit">Sign Up</Button>
+                        </form>
+                        {authError &&
+                            <div className="auth-error">
+                                <p>{authError}</p>
+                            </div>
                         }
-                    })}
-                    type="email"/>
-                <br/>
-                <br/>
-                <TextField
-                    error={errors.password}
-                    label="Password"
-                    type="password"
-                    variant="outlined"
-                    helperText={errors.password && "Invalid password"}
-                    required
-                    {...register("password", { required: true, maxLength: 20 })}/>
-                <br/>
-                <br/>
-                <Button
-                    color="primary"
-                    type="submit">Sign Up</Button>
-                {authError &&
-                    <div className="auth-error">
-                        <p>{authError}</p>
-                    </div>
-                }
-            </form>
+                    </Paper>
+                </Grid>
+            </Grid>
         </div>
     );
 };
