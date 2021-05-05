@@ -1,11 +1,5 @@
 import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
-// import _ from 'lodash';
 import {
-    // Modal,
-    // Backdrop,
-    // Fade,
-    // Divider,
     TextField,
     Dialog,
     DialogTitle,
@@ -18,23 +12,29 @@ import {
     MenuItem,
     makeStyles,
     InputLabel,
-    FormControl, Chip, Input
+    FormControl,
+    Chip,
+    Input
 } from '@material-ui/core';
 // import {FEATURE_TYPES} from "../../../consts";
+import {FEATURE_TAGS} from "../../../consts";
 import FileField from "../../shared/FileField";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateFeatureSchema} from "../../../models/feature.model";
 
 const useStyles = makeStyles(() => ({
+    dialog: {
+        '& .MuiDialog-paper': {
+            maxWidth: '750px',
+        }
+    },
     dialogContent: {
         display: 'flex',
         flexDirection: 'column',
-        minWidth: '600px',
-        // alignItems: 'center',
-        // justifyContent: 'center',
+        maxHeight: '700px',
         flexGrow: 0,
-        placeItems: 'flex-start'
+        placeItems: 'flex-start',
     },
     imagesSection: {
         display: 'flex',
@@ -85,10 +85,11 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
     };
 
     return (
-        <div>
+        <>
             <Dialog
                 open={open}
                 onClose={handleClose}
+                className={classes.dialog}
                 scroll="paper"
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
@@ -337,9 +338,10 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                             )}
                             MenuProps={MenuProps}
                         >
-                            {['a', 'b'].map((name) => (
-                                <MenuItem key={name} value={name}>
-                                    {name}
+                            {
+                                Object.values(FEATURE_TAGS).map(value => (
+                                <MenuItem key={value} value={value}>
+                                    {value}
                                 </MenuItem>
                             ))}
                         </Select>
@@ -355,7 +357,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                 </DialogActions>
                 </form>
             </Dialog>
-        </div>
+        </>
     );
 }
 
