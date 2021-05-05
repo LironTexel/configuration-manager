@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button} from "@material-ui/core";
 import firebase from "firebase/app";
-import PanoramaTwoToneIcon from '@material-ui/icons/PanoramaTwoTone';
+import InsertPhotoTwoToneIcon from '@material-ui/icons/InsertPhotoTwoTone';
 import {makeStyles} from "@material-ui/core/styles";
 import {Colors} from "../../styles/colors";
 
@@ -68,7 +68,7 @@ const FileField = (props) => {
             <div className={classes.root}>
                 { isImage &&
                     <div className={classes.imagePreview}>
-                        { fileUrl ? <img alt='upload' src={fileUrl}/> : <PanoramaTwoToneIcon/> }
+                        { fileUrl ? <img alt='upload' src={fileUrl}/> : <InsertPhotoTwoToneIcon/> }
                     </div>
                 }
 

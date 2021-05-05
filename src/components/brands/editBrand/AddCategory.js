@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         alignItems: 'baseline',
-        // display: 'flex',
     },
     addForm: {
     },
@@ -43,6 +42,7 @@ const AddCategory = ({ brand }) => {
 
     useEffect(() => {
         setIsExpanded(false);
+        setHasError(false);
     }, [brand.id])
 
     return (

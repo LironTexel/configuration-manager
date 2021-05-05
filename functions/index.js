@@ -1,6 +1,8 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
+const express = require('express');
 admin.initializeApp(functions.config().firebase);
+const app = express();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -9,6 +11,35 @@ admin.initializeApp(functions.config().firebase);
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+exports.getBrand = functions.https.onRequest((request, response) => {
+    functions.logger.info("Hello logs!", {structuredData: true});
+    functions.logger.info('request:' + JSON.stringify(request), {structuredData: true});
+    response.send("Hello from Firebase!");
+});
+
+exports.brands = functions.https.onRequest(app);
+
+app.get('/', async (req, res) => {
+    const brandsSnapshot = await admin.firestore().collection('brands').get();
+
+    let brands = [];
+    brandsSnapshot.forEach(doc => {
+        let id = doc.id;
+        let data = doc.data();
+
+        brands.push({ id, ...data });
+    })
+
+    res.status(200).send(JSON.stringify(brands));
+})
+
+app.get('/:brandId', async (req, res) => {
+    const brandSnapshot = await admin.firestore().collection('brands').doc(req.params.brandId).get();
+
+    res.status(200).send(JSON.stringify(brandSnapshot.data()));
+
+})
 
 const createNotification = (notification => {
   return admin.firestore().collection('notifications')

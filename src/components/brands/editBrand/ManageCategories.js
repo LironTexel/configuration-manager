@@ -3,11 +3,19 @@ import {Accordion, AccordionSummary, AccordionDetails, Typography, withStyles} f
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {makeStyles} from "@material-ui/core/styles";
 import AddCategory from "./AddCategory";
+import FeaturePreview from "./FeaturePreview";
 
 const useStyles = makeStyles((theme) => ({
-    title: {
-        textAlign: 'left',
-        padding: theme.spacing(2, 1),
+    root: {
+        padding: theme.spacing(4, 0, 1),
+    },
+    addCategory: {
+        padding: theme.spacing(0, 0, 2)
+    },
+    featurePreview: {
+        width: '33%',
+        maxWidth: '300px',
+        // height: '100%'
     }
 }));
 
@@ -28,7 +36,7 @@ const StyledAccordion = withStyles({
     expanded: {},
 })(Accordion);
 
-const StyledAccordionSummary = withStyles(theme => ({
+const StyledAccordionSummary = withStyles(() => ({
     root: {
         backgroundColor: 'rgba(0, 0, 0, .03)',
         borderBottom: '1px solid rgba(0, 0, 0, .125)',
@@ -43,10 +51,20 @@ const StyledAccordionSummary = withStyles(theme => ({
             margin: '12px 0',
         },
     },
-    addCategory: {
-        padding: theme.spacing()
-    },
+    editCategory: {
+        display: 'none',
+        '&::hover': {
+            display: 'block'
+        }
+    }
 }))(AccordionSummary);
+
+const StyledAccordionDetails = withStyles(() => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+}))(AccordionDetails);
 
 const ManageCategories = ({ brand }) => {
     const classes = useStyles();
@@ -57,27 +75,31 @@ const ManageCategories = ({ brand }) => {
     };
 
     return (
-        <div className="container section brand-categories">
-            <Typography className={classes.title}>Manage categories</Typography>
-            <AddCategory className={classes.addCategory} brand={brand}/>
+        <div className={classes.root}>
+            <div className={classes.addCategory}><AddCategory brand={brand}/></div>
             {
                 brand?.categories?.map(category => {
                     return (
-                        <StyledAccordion key={ category.name } expanded={expanded === category.name}
+                        <StyledAccordion key={ category.name }
+                                         expanded={expanded === category.name}
                                          onChange={handleChange(category.name)}>
-                            <StyledAccordionSummary aria-controls="category-content"
-                                                    expandIcon={<ExpandMoreIcon />}>
+                            <StyledAccordionSummary aria-controls="category-content" expandIcon={<ExpandMoreIcon />}>
                                 <Typography>{category.name}</Typography>
                             </StyledAccordionSummary>
-                            <AccordionDetails>
+                            <StyledAccordionDetails>
                                 {
                                     category?.content?.map(feature =>
-                                        <Typography key={ feature.id }>
-                                            {feature.title}
-                                        </Typography>
+                                        <div className={classes.featurePreview}>
+                                            <FeaturePreview key={ feature.id }
+                                                            feature={feature}
+                                                            brand={brand}/>
+                                        </div>
                                     )
                                 }
-                            </AccordionDetails>
+                                <div className={classes.featurePreview}>
+                                    <FeaturePreview brand={brand}/>
+                                </div>
+                            </StyledAccordionDetails>
                         </StyledAccordion>
                     )
                 })

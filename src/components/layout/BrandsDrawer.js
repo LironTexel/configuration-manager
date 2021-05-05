@@ -133,7 +133,7 @@ const BrandsDrawer = () => {
                                                        textOverflow="ellipsis"
                                                        overflow="hidden">
                                                   ID: {brand.id}
-                                              </Box>}
+                                                </Box>}
                                 />
                             </ListItem>
                             <Divider className={classes.brandDivider}
