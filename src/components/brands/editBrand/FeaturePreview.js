@@ -19,8 +19,16 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         height: '200px',
         padding: 0,
+        bottom: 0,
         overflow: 'hidden',
         margin: theme.spacing(1),
+        opacity: 0.85,
+        transition: 'bottom 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease-in-out',
+        '&:hover': {
+            bottom: '2px',
+            opacity: 1,
+            boxShadow: `1px 1px 5px 1px ${Colors.MID_GREY}`,
+        }
     },
     preview: {
         display: 'flex',

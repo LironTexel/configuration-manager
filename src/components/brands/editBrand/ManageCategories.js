@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(0, 0, 2)
     },
     featurePreview: {
-        width: '33%',
-        maxWidth: '300px',
+        width: '25%',
+        // maxWidth: '300px',
         // height: '100%'
     }
 }));

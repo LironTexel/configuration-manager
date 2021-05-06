@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
             // width: '150px'
         },
         '& > img' : {
-            maxWidth: '180px',
-            maxHeight: '180px',
+            maxWidth: '100%',
+            maxHeight: '100%',
         },
         '& .MuiSvgIcon-root': {
             height: '100%',
