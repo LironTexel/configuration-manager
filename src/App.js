@@ -32,8 +32,6 @@ function App() {
 }
 
 export default firestoreConnect([
-    { collection: 'users', orderBy: ['username', 'asc'] },
     { collection: 'accounts', orderBy: ['name', 'asc'] },
-    { collection: 'brands', orderBy: ['name', 'asc'] },
     { collection: 'notifications', limit: 3, orderBy: ['time', 'desc'] }
 ])(App);
