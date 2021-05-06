@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
     featurePreview: {
         width: '25%',
-        // maxWidth: '300px',
-        // height: '100%'
+        minWidth: '150px'
     }
 }));
 

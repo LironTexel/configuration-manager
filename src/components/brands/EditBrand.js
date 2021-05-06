@@ -111,7 +111,7 @@ const EditBrand = () => {
                                                isImage
                                                fileName="logo"
                                                onChange={onLogoChange}
-                                               input={brands?.[id]?.logoUrl}/>
+                                               defaultValue={brands?.[id]?.logoUrl}/>
                                 </Paper>
                             </Grid>
                         </Grid>

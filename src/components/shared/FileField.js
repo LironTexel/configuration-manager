@@ -13,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
     },
     imagePreview: {
         maxWidth: '200px',
-        maxHeight: '200px',
+        maxHeight: `calc(100% - ${theme.spacing(2)}px)`,
         height: '100%',
         width: '100%',
         border: `1px solid ${Colors.MID_GREY}`,
         borderRadius: '10px',
-        padding: '5px',
+        padding: theme.spacing(1),
         '&::before': {
             content: '"Image preview"',
             display: 'block',
@@ -44,13 +44,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FileField = (props) => {
-    const { input, uploadDirectoryPath, onChange, isImage, fileName } = props;
+    const { defaultValue, uploadDirectoryPath, onChange, isImage, fileName } = props;
     const [ fileUrl, setFileUrl ] = useState('');
     const classes = useStyles();
 
     useEffect(() => {
-            setFileUrl(input);
-    }, [input]);
+            setFileUrl(defaultValue);
+    }, [defaultValue]);
 
     const uploadFile = async (e) => {
         const fileToUpload = e.target.files[0];
@@ -71,7 +71,6 @@ const FileField = (props) => {
                         { fileUrl ? <img alt='upload' src={fileUrl}/> : <InsertPhotoTwoToneIcon/> }
                     </div>
                 }
-
                 <Button
                     variant="contained"
                     component="label"
@@ -84,16 +83,6 @@ const FileField = (props) => {
                         hidden
                     />
                 </Button>
-
-                {/*    <TextField*/}
-                {/*        key={fileUrl}*/}
-                {/*        value={fileUrl || ''}*/}
-                {/*        variant="outlined"*/}
-                {/*        label="File url preview"*/}
-                {/*        fullWidth*/}
-                {/*        disabled*/}
-                {/*        onChange={onChange}/>*/}
-
             </div>
     )
 }

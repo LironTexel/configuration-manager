@@ -8,13 +8,7 @@ import {
     DialogActions,
     Button,
     Typography,
-    Select,
-    MenuItem,
     makeStyles,
-    InputLabel,
-    FormControl,
-    Chip,
-    Input
 } from '@material-ui/core';
 // import {FEATURE_TYPES} from "../../../consts";
 import {FEATURE_TAGS} from "../../../consts";
@@ -22,6 +16,7 @@ import FileField from "../../shared/FileField";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateFeatureSchema} from "../../../models/feature.model";
+import TagsField from "../../shared/TagsField";
 
 const useStyles = makeStyles(() => ({
     dialog: {
@@ -45,31 +40,10 @@ const useStyles = makeStyles(() => ({
         flexBasis: 1,
         width: '20%',
     },
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: 2,
-    },
     featureType: {
         minWidth: '40%'
     },
-    featureTags: {
-        minWidth: '40%'
-    }
 }));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
 
 const FeatureModal = ({ open , handleClose, feature, brand }) => {
     const classes = useStyles();
@@ -263,7 +237,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <FileField
-                                                input={featureDetails?.images?.preview}
+                                                defaultValue={featureDetails?.images?.preview}
                                                 error={errors['images.preview']}
                                                 className={classes.image}
                                                 uploadDirectoryPath={`brands/${brand.id}/images`}
@@ -277,7 +251,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <FileField
-                                                input={featureDetails?.images?.main}
+                                                defaultValue={featureDetails?.images?.main}
                                                 error={errors['images.main']}
                                                 className={classes.image}
                                                 uploadDirectoryPath={`brands/${brand.id}/images`}
@@ -291,7 +265,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <FileField
-                                                input={featureDetails?.images?.main}
+                                                defaultValue={featureDetails?.images?.main}
                                                 error={errors['images.watch_together']}
                                                 className={classes.image}
                                                 uploadDirectoryPath={`brands/${brand.id}/images`}
@@ -305,7 +279,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <FileField
-                                                input={featureDetails?.images?.invitation}
+                                                defaultValue={featureDetails?.images?.invitation}
                                                 error={errors['images.invitation']}
                                                 className={classes.image}
                                                 uploadDirectoryPath={`brands/${brand.id}/images`}
@@ -315,37 +289,22 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                         }
                                     />
                                 </div>
+
+                                <DialogContentText>Tags</DialogContentText>
+                                <Controller
+                                    name='tags'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TagsField
+                                            defaultValue={featureDetails?.tags}
+                                            tagsDictionary={FEATURE_TAGS}
+                                            error={errors['tags']}
+                                            onChange={onChange}
+                                        />
+                                    }
+                                />
                             </div>
 
-                    <DialogContentText>Tags</DialogContentText>
-                    <FormControl className={classes.featureTags}>
-                        <InputLabel id="demo-mutiple-chip-label">Tags</InputLabel>
-                        <Select
-                            labelId="demo-mutiple-chip-label"
-                            id="demo-mutiple-chip"
-                            multiple
-                            defaultValue={featureDetails?.tags || []}
-                            // onChange={(e) => {
-                            //     handleChange('tags', e.target.value);
-                            // }}
-                            input={<Input id="select-multiple-chip" />}
-                            renderValue={(selected) => (
-                                <div className={classes.chips}>
-                                    {selected.map((value) => (
-                                        <Chip key={value} label={value} className={classes.chip} />
-                                    ))}
-                                </div>
-                            )}
-                            MenuProps={MenuProps}
-                        >
-                            {
-                                Object.values(FEATURE_TAGS).map(value => (
-                                <MenuItem key={value} value={value}>
-                                    {value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
