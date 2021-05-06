@@ -12,32 +12,81 @@ const app = express();
 //   response.send("Hello from Firebase!");
 // });
 
-// exports.getAccount = functions.https.onRequest((request, response) => {
-//     functions.logger.info("Hello logs!", {structuredData: true});
-//     functions.logger.info('request:' + JSON.stringify(request), {structuredData: true});
-//     response.send("Hello from Firebase!");
-// });
+app.get('/accountIds', async (req, res) => {
+    const accountsSnapshot = await admin.firestore().collection('accounts').get();
+    let accounts = [];
+
+    accountsSnapshot.forEach(doc => {
+        accounts.push({ id: doc.id });
+    })
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).send(JSON.stringify({ accounts }));
+})
+
 
 exports.accounts = functions.https.onRequest(app);
 
 app.get('/', async (req, res) => {
     const accountsSnapshot = await admin.firestore().collection('accounts').get();
 
+    const selectQuery = (req.query && req.query.select) || '';
+    const fields = selectQuery.split(',');
     let accounts = [];
-    accountsSnapshot.forEach(doc => {
-        let id = doc.id;
-        let data = doc.data();
 
-        accounts.push({ id, ...data });
+    accountsSnapshot.forEach(doc => {
+        const docData = doc.data();
+        let account = {};
+        if (!selectQuery) account = docData;
+        else fields.forEach((field) => {
+            switch (field) {
+                case 'id':
+                    account.id = doc.id;
+                    break;
+                case 'name':
+                case 'logoUrl':
+                case 'categories':
+                case 'featuredContent':
+                    account[field] = docData[field];
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        accounts.push(account);
     })
 
-    res.status(200).send(JSON.stringify(accounts));
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).send(JSON.stringify({accounts}));
 })
 
 app.get('/:accountId', async (req, res) => {
     const accountSnapshot = await admin.firestore().collection('accounts').doc(req.params.accountId).get();
 
-    res.status(200).send(JSON.stringify(accountSnapshot.data()));
+    const accountData = accountSnapshot.data();
+    const selectQuery = (req.query && req.query.select) || '';
+    const fields = selectQuery.split(',');
+    let result = {}
+
+    if (!selectQuery) result = accountData;
+    else fields.forEach((field) => {
+        switch (field) {
+            case 'id':
+                result.id = accountSnapshot.id;
+                break;
+            case 'name':
+            case 'logoUrl':
+            case 'categories':
+            case 'featuredContent':
+                result[field] = accountData[field];
+                break;
+            default:
+                break;
+        }
+    });
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).send(JSON.stringify(result));
 
 })
 
