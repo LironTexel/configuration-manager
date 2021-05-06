@@ -3,10 +3,10 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 // import Navbar from "./components/layout/navbar/Navbar";
 import Layout from "./components/layout/Layout";
 import Dashboard from "./components/dashboard/Dashboard";
-import EditBrand from "./components/brands/EditBrand";
+import EditAccount from "./components/accounts/EditAccount";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
-import CreateBrand from "./components/brands/CreateBrand";
+import CreateAccount from "./components/accounts/CreateAccount";
 import {firestoreConnect} from "react-redux-firebase";
 // import {useSelector} from "react-redux";
 
@@ -19,10 +19,10 @@ function App() {
             <Layout>
                 <Switch>
                     <Route exact path='/' component={ Dashboard }/>
-                    <Route path='/brands/:id' component={ EditBrand }/>
+                    <Route path='/accounts/:id' component={ EditAccount }/>
                     <Route path='/login' component={ Login }/>
                     <Route path='/signup' component={ SignUp }/>
-                    <Route path='/create' component={ CreateBrand }/>
+                    <Route path='/create' component={ CreateAccount }/>
                 </Switch>
             </Layout>
           </header>
@@ -32,6 +32,8 @@ function App() {
 }
 
 export default firestoreConnect([
+    { collection: 'users', orderBy: ['username', 'asc'] },
+    { collection: 'accounts', orderBy: ['name', 'asc'] },
     { collection: 'brands', orderBy: ['name', 'asc'] },
     { collection: 'notifications', limit: 3, orderBy: ['time', 'desc'] }
 ])(App);

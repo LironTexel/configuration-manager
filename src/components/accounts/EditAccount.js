@@ -4,12 +4,12 @@ import {Redirect, useParams } from "react-router-dom";
 import moment from "moment";
 import {Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
-import {editBrand} from "../../store/actions/brandActions";
+import {editAccount} from "../../store/actions/accountActions";
 import {makeStyles} from "@material-ui/core/styles";
 import FileField from "../shared/FileField";
 import clsx from "clsx";
-import ManageCategories from "./editBrand/ManageCategories";
-import FeaturePreview from "./editBrand/FeaturePreview";
+import ManageCategories from "./editAccount/ManageCategories";
+import FeaturePreview from "./editAccount/FeaturePreview";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,44 +30,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const EditBrand = () => {
+const EditAccount = () => {
     const { id } = useParams()
     const dispatch = useDispatch();
-    const brands = useSelector((state) => state?.firestore?.data?.brands);
+    const accounts = useSelector((state) => state?.firestore?.data?.accounts);
     const auth = useSelector((state) => state?.firebase?.auth);
     const { control, handleSubmit, formState: { errors }, setValue } = useForm();
     const classes = useStyles();
-    console.log({brands})
+    console.log({accounts})
 
-    const [ brand, setBrand ] = useState({});
+    const [ account, setAccount ] = useState({});
 
     useEffect(() => {
         if (id) {
-            setBrand(brands?.[id]);
-            setValue( 'name', brands?.[id]?.name || '');
-            setValue( 'logoUrl', brands?.[id]?.logoUrl || '');
+            setAccount(accounts?.[id]);
+            setValue( 'name', accounts?.[id]?.name || '');
+            setValue( 'logoUrl', accounts?.[id]?.logoUrl || '');
         }
-    }, [brands, id, setValue]);
+    }, [accounts, id, setValue]);
 
     const onSubmit = (data) => {
         console.log({data});
-        dispatch(editBrand({ id, ...brand, ...data }));
+        dispatch(editAccount({ id, ...account, ...data }));
     };
 
     const onLogoChange = (logoUrl => {
-        dispatch(editBrand({ id, ...brand, logoUrl }));
+        dispatch(editAccount({ id, ...account, logoUrl }));
     })
-
 
     if (!auth.uid) return <Redirect to='/login'/>;
     else return (
-        <div className="container section brand-details">
-            { !brand && <Typography>loading brand...</Typography> }
-            { brand &&
+        <div className="container section account-details">
+            { !account && <Typography>loading account...</Typography> }
+            { account &&
                 <div className={clsx(classes.root, "grid-container")}>
                     <div className={classes.header}>
-                        <Typography variant={"h6"}>Brand {brand.name}</Typography>
-                        <Typography color={"textSecondary"}>Created { moment(brand.createdAt).calendar() }</Typography>
+                        <Typography variant={"h6"}>Account {account.name}</Typography>
+                        <Typography color={"textSecondary"}>Created { moment(account.createdAt).calendar() }</Typography>
                     </div>
 
                         <Grid container spacing={3}>
@@ -83,8 +82,8 @@ const EditBrand = () => {
                                                     error={errors['name']}
                                                     label="Name"
                                                     variant="outlined"
-                                                    key={brand.name}
-                                                    defaultValue={brand.name}
+                                                    key={account.name}
+                                                    defaultValue={account.name}
                                                     helperText={errors.name && "Name is mandatory"}
                                                     onChange={onChange}
                                                     required
@@ -96,22 +95,22 @@ const EditBrand = () => {
                                         />
                                         <Button
                                             color="primary"
-                                            type="submit">Rename brand</Button>
+                                            type="submit">Rename account</Button>
                                     </form>
                                     <div className={classes.featuredContentContainer}>
                                         <Typography>Featured content</Typography>
-                                        <FeaturePreview feature={brand?.featuredContent} brand={brand}/>
+                                        <FeaturePreview feature={account?.featuredContent} account={account}/>
                                     </div>
-                                    <ManageCategories brand={brand}/>
+                                    <ManageCategories account={account}/>
                                 </Paper>
                             </Grid>
                             <Grid item xs={3}>
                                 <Paper className={classes.paper}>
-                                    <FileField uploadDirectoryPath={`brands/${id}/logos`}
+                                    <FileField uploadDirectoryPath={`accounts/${id}/logos`}
                                                isImage
                                                fileName="logo"
                                                onChange={onLogoChange}
-                                               defaultValue={brands?.[id]?.logoUrl}/>
+                                               defaultValue={accounts?.[id]?.logoUrl}/>
                                 </Paper>
                             </Grid>
                         </Grid>
@@ -121,4 +120,4 @@ const EditBrand = () => {
     )
 };
 
-export default EditBrand;
+export default EditAccount;

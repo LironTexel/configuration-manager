@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const FeaturePreview = ({ feature, brand }) => {
+const FeaturePreview = ({ feature, account }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
 
@@ -100,7 +100,7 @@ const FeaturePreview = ({ feature, brand }) => {
                     {/*<Typography variant="button" >{feature?.title || 'add feature'}</Typography>*/}
                 </div>
             </Button>
-            <FeatureModal open={open} handleClose={handleClose} feature={feature} brand={brand}/>
+            <FeatureModal open={open} handleClose={handleClose} feature={feature} account={account}/>
         </div>
     );
 };

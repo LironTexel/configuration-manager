@@ -1,14 +1,14 @@
 import * as yup from 'yup';
 import {useMemo} from "react";
 
-export const CreateFeatureSchema = (brand) =>
+export const CreateFeatureSchema = (account) =>
     useMemo(() => (
         yup.object().shape({
             id: yup
                 .number()
                 .required('ID is required')
                 .test("UniqueID", "ID already exists", value => {
-                    return !brand || !brand.categories.find(category =>
+                    return !account || !account.categories.find(category =>
                         category.content.find(feature => feature.id === value))
                 }),
             title: yup.string().required('Title is required'),
@@ -32,5 +32,5 @@ export const CreateFeatureSchema = (brand) =>
             // tags: yup.array().of(yup.string()),
             // labels: yup.string(), //TODO?
         })
-    ), [brand]);
+    ), [account]);
 

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 // import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Navbar from "./navbar/Navbar";
-import BrandsList from "./BrandsDrawer";
+import AccountsList from "./AccountsDrawer";
 import clsx from "clsx";
 // import {Typography} from "@material-ui/core";
 import { drawerWidth } from "../../consts";
@@ -45,14 +45,14 @@ const useStyles = makeStyles((theme) =>
 const Layout = (props) => {
     const classes = useStyles();
     const auth = useSelector((state) => state?.firebase?.auth);
-    const isOpen = useSelector((state) => state.misc.isBrandsDrawerOpen);
+    const isOpen = useSelector((state) => state.misc.isAccountsDrawerOpen);
     const uid = auth?.uid;
     console.log({uid})
 
     return (
         <div className={classes.root}>
             <Navbar/>
-            <BrandsList/>
+            <AccountsList/>
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: isOpen,

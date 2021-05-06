@@ -52,7 +52,7 @@ const useStyles = makeStyles(() =>
                 backgroundColor: Colors.MID_TEAL,
             },
         },
-        createBrandItem: {
+        createAccountItem: {
             textDecoration: 'underline transparent', //override navlink underline
             color: 'inherit',
         }
@@ -91,8 +91,8 @@ const LoggedInLinks = () => {
                     <ListItemIcon>
                         <AddBoxIcon fontSize="small" />
                     </ListItemIcon>
-                    <NavLink className={classes.createBrandItem} to='/create'>
-                        <Typography>Create brand</Typography>
+                    <NavLink className={classes.createAccountItem} to='/create'>
+                        <Typography>Create account</Typography>
                     </NavLink>
                 </MenuItem>
                 <MenuItem className={classes.menuItem} onClick={logout}>

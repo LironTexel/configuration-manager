@@ -33,11 +33,11 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
-    brandLink: {
+    accountLink: {
         textDecoration: 'underline transparent', //override link underline
         color: 'inherit'
     },
-    brandItem: {
+    accountItem: {
         color: Colors.WHITE,
         whiteSpace: 'nowrap',
         '&:hover': {
@@ -46,23 +46,23 @@ const useStyles = makeStyles((theme) => ({
 
         },
     },
-    brandItemLogo: {
+    accountItemLogo: {
         width: '40px',
         height: '40px',
         borderRadius: '50%',
     },
-    brandDefaultLogo: {
+    accountDefaultLogo: {
         color: Colors.MID_TEAL,
         marginLeft: theme.spacing(1),
     },
-    brandItemTextSecondary: {
+    accountItemTextSecondary: {
         color: Colors.GREY,
     },
     toolbarDivider: {
         background: Colors.TEAL,
         height: '2px',
     },
-    brandDivider: {
+    accountDivider: {
         background: Colors.MID_TEAL,
     },
     isActive: {
@@ -81,12 +81,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const BrandsDrawer = () => {
+const AccountsDrawer = () => {
     // const { id } = useParams(); //TODO add active class to selected item
     const classes = useStyles();
     const dispatch = useDispatch();
-    const isOpen = useSelector((state) => state.misc.isBrandsDrawerOpen);
-    const brands = useSelector((state) => state?.firestore?.ordered?.brands);
+    const isOpen = useSelector((state) => state.misc.isAccountsDrawerOpen);
+    const accounts = useSelector((state) => state?.firestore?.ordered?.accounts);
     const firestore = useSelector((state) => state?.firestore);
     console.log({firestore})
 
@@ -111,32 +111,32 @@ const BrandsDrawer = () => {
                 </div>
                 <Divider className={classes.toolbarDivider}/>
                 <List>
-                    { brands && brands.map(brand => (
-                        <Link className={classes.brandLink}
-                              to={'/brands/' + brand.id} key={ brand.id }>
+                    { accounts && accounts.map(account => (
+                        <Link className={classes.accountLink}
+                              to={'/accounts/' + account.id} key={ account.id }>
                             <ListItem button
                                       onClick={toggleDrawer}
-                                      className={clsx(classes.brandItem, {
-                                // [classes.isActive]: (brand.id === id),
+                                      className={clsx(classes.accountItem, {
+                                // [classes.isActive]: (account.id === id),
                             })}>
                                 <ListItemIcon>
                                     {
-                                        brand.logoUrl ? <img className={classes.brandItemLogo} src={brand.logoUrl} alt={"brand-logo"}/>
-                                        : <StoreMallDirectoryTwoToneIcon className={classes.brandDefaultLogo}/>
+                                        account.logoUrl ? <img className={classes.accountItemLogo} src={account.logoUrl} alt={"account-logo"}/>
+                                        : <StoreMallDirectoryTwoToneIcon className={classes.accountDefaultLogo}/>
                                     }
                                 </ListItemIcon>
                                 <ListItemText textOverflow="ellipsis"
-                                              primary={<Typography>{brand.name}</Typography>}
+                                              primary={<Typography>{account.name}</Typography>}
                                               secondary={
                                                   <Box component="div"
-                                                       className={classes.brandItemTextSecondary}
+                                                       className={classes.accountItemTextSecondary}
                                                        textOverflow="ellipsis"
                                                        overflow="hidden">
-                                                  ID: {brand.id}
+                                                  ID: {account.id}
                                                 </Box>}
                                 />
                             </ListItem>
-                            <Divider className={classes.brandDivider}
+                            <Divider className={classes.accountDivider}
                                      variant="inset"
                             />
                         </Link>
@@ -147,4 +147,4 @@ const BrandsDrawer = () => {
     )
 }
 
-export default BrandsDrawer;
+export default AccountsDrawer;

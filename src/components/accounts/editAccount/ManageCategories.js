@@ -65,7 +65,7 @@ const StyledAccordionDetails = withStyles(() => ({
     },
 }))(AccordionDetails);
 
-const ManageCategories = ({ brand }) => {
+const ManageCategories = ({ account }) => {
     const classes = useStyles();
     const [expanded, setExpanded] = useState('');
 
@@ -75,9 +75,9 @@ const ManageCategories = ({ brand }) => {
 
     return (
         <div className={classes.root}>
-            <div className={classes.addCategory}><AddCategory brand={brand}/></div>
+            <div className={classes.addCategory}><AddCategory account={account}/></div>
             {
-                brand?.categories?.map(category => {
+                account?.categories?.map(category => {
                     return (
                         <StyledAccordion key={ category.name }
                                          expanded={expanded === category.name}
@@ -91,12 +91,12 @@ const ManageCategories = ({ brand }) => {
                                         <div className={classes.featurePreview}>
                                             <FeaturePreview key={ feature.id }
                                                             feature={feature}
-                                                            brand={brand}/>
+                                                            account={account}/>
                                         </div>
                                     )
                                 }
                                 <div className={classes.featurePreview}>
-                                    <FeaturePreview brand={brand}/>
+                                    <FeaturePreview account={account}/>
                                 </div>
                             </StyledAccordionDetails>
                         </StyledAccordion>

@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import {useMemo} from "react";
 
-export const CreateBrandSchema = (brands) =>
+export const CreateAccountSchema = (accounts) =>
     useMemo(() => (
         yup.object().shape({
             name: yup
@@ -10,8 +10,8 @@ export const CreateBrandSchema = (brands) =>
             id: yup
                 .string()
                 .required('ID is required')
-                .test("UniqueID", "ID already exists", value => !brands[value])
+                .test("UniqueID", "ID already exists", value => !accounts[value])
                 .length(6, 'ID must be 6 characters long'),
         })
-    ), [brands]);
+    ), [accounts]);
 

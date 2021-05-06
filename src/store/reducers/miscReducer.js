@@ -1,14 +1,14 @@
 const initState = {
-    isBrandsDrawerOpen: false
+    isAccountsDrawerOpen: false
 };
 
 const miscReducer = ( state = initState, action) => {
     switch (action.type) {
         case 'TOGGLE_DRAWER': {
-            console.log('toggling drawer, initial state-', action.isBrandsDrawerOpen);
+            console.log('toggling drawer, initial state-', action.isAccountsDrawerOpen);
             return {
                 ...state,
-                isBrandsDrawerOpen: !state.isBrandsDrawerOpen,
+                isAccountsDrawerOpen: !state.isAccountsDrawerOpen,
             };
         }
         default: {

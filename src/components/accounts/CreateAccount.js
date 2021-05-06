@@ -1,12 +1,12 @@
 import React from 'react';
 import {Button, CssBaseline, TextField, Typography, Grid, Paper} from '@material-ui/core';
 import {Controller, useForm} from "react-hook-form";
-import {createBrand} from "../../store/actions/brandActions";
+import {createAccount} from "../../store/actions/accountActions";
 import { useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateBrandSchema } from '../../models/createBrand.model'
+import { CreateAccountSchema } from '../../models/createAccount.model'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const CreateBrand = (props) => {
+const CreateAccount = (props) => {
     const dispatch = useDispatch();
-    const brands = useSelector((state) => state?.firestore?.data?.brands);
+    const accounts = useSelector((state) => state?.firestore?.data?.accounts);
 
     const { handleSubmit, formState: { errors }, control } = useForm({
-        resolver: yupResolver(CreateBrandSchema(brands))
+        resolver: yupResolver(CreateAccountSchema(accounts))
     });
 
     const auth = useSelector((state) => state?.firebase?.auth);
@@ -41,7 +41,7 @@ const CreateBrand = (props) => {
 
     const onSubmit = (data) => {
         const { name, id } = data;
-        dispatch(createBrand({ id, name }));
+        dispatch(createAccount({ id, name }));
         props.history.push('/'); // TODO redirect only when success
     };
 
@@ -49,7 +49,7 @@ const CreateBrand = (props) => {
     else return (
         <div>
             <CssBaseline />
-            <Typography variant={"h6"} className={classes.title}>Create a new brand</Typography>
+            <Typography variant={"h6"} className={classes.title}>Create a new account</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={6}>
                     <Paper className={classes.paper}>
@@ -65,7 +65,7 @@ const CreateBrand = (props) => {
                                         <TextField
                                             error={errors['id']}
                                             className={classes.input}
-                                            label="Brand ID"
+                                            label="Account ID"
                                             variant="outlined"
                                             helperText={errors.id?.message}
                                             onChange={onChange}
@@ -82,7 +82,7 @@ const CreateBrand = (props) => {
                                         <TextField
                                             error={errors['name']}
                                             className={classes.input}
-                                            label="Brand name"
+                                            label="Account name"
                                             variant="outlined"
                                             helperText={errors.name?.message}
                                             onChange={onChange}
@@ -94,7 +94,7 @@ const CreateBrand = (props) => {
                             <Button
                                 color="primary"
                                 className={classes.createButton}
-                                type="submit">Create Brand</Button>
+                                type="submit">Create Account</Button>
                         </form>
 
                     </Paper>
@@ -105,4 +105,4 @@ const CreateBrand = (props) => {
     );
 };
 
-export default CreateBrand;
+export default CreateAccount;

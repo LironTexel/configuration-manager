@@ -45,12 +45,12 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const FeatureModal = ({ open , handleClose, feature, brand }) => {
+const FeatureModal = ({ open , handleClose, feature, account }) => {
     const classes = useStyles();
     const isNewFeature = !feature;
     const featureDetails = { ...feature };
     const { handleSubmit, formState: { errors }, control } = useForm({
-        resolver: yupResolver(CreateFeatureSchema(brand))
+        resolver: yupResolver(CreateFeatureSchema(account))
     });
 
     const onSubmit = (data) => {
@@ -240,7 +240,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                                 defaultValue={featureDetails?.images?.preview}
                                                 error={errors['images.preview']}
                                                 className={classes.image}
-                                                uploadDirectoryPath={`brands/${brand.id}/images`}
+                                                uploadDirectoryPath={`accounts/${account.id}/images`}
                                                 onChange={onChange}
                                                 isImage
                                                 fileName={'Preview'}/>
@@ -254,7 +254,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                                 defaultValue={featureDetails?.images?.main}
                                                 error={errors['images.main']}
                                                 className={classes.image}
-                                                uploadDirectoryPath={`brands/${brand.id}/images`}
+                                                uploadDirectoryPath={`accounts/${account.id}/images`}
                                                 onChange={onChange}
                                                 isImage
                                                 fileName={'Main'}/>
@@ -268,7 +268,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                                 defaultValue={featureDetails?.images?.main}
                                                 error={errors['images.watch_together']}
                                                 className={classes.image}
-                                                uploadDirectoryPath={`brands/${brand.id}/images`}
+                                                uploadDirectoryPath={`accounts/${account.id}/images`}
                                                 onChange={onChange}
                                                 isImage
                                                 fileName={'Watch together'}/>
@@ -282,7 +282,7 @@ const FeatureModal = ({ open , handleClose, feature, brand }) => {
                                                 defaultValue={featureDetails?.images?.invitation}
                                                 error={errors['images.invitation']}
                                                 className={classes.image}
-                                                uploadDirectoryPath={`brands/${brand.id}/images`}
+                                                uploadDirectoryPath={`accounts/${account.id}/images`}
                                                 onChange={onChange}
                                                 isImage
                                                 fileName={'invitation'}/>

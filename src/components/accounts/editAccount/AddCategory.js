@@ -5,7 +5,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import { useDispatch,
     // useSelector
 } from "react-redux";
-import {addCategory} from "../../../store/actions/brandActions";
+import {addCategory} from "../../../store/actions/accountActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const AddCategory = ({ brand }) => {
+const AddCategory = ({ account }) => {
     const dispatch = useDispatch();
     const [hasError, setHasError] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -28,13 +28,13 @@ const AddCategory = ({ brand }) => {
     // const addError = useSelector((state) => state?.auth?.authError);
 
     const handleAddCategory = () => {
-        const categoryExists = brand?.categories?.find(cat =>
+        const categoryExists = account?.categories?.find(cat =>
             cat.name.toLowerCase() === categoryName.toLowerCase())
 
         if (categoryName && !categoryExists) {
             setHasError(false);
             console.log({hasError});
-            dispatch(addCategory(categoryName, {...brand}));
+            dispatch(addCategory(categoryName, {...account}));
             //TODO clear content
         }
         else setHasError(true);
@@ -43,7 +43,7 @@ const AddCategory = ({ brand }) => {
     useEffect(() => {
         setIsExpanded(false);
         setHasError(false);
-    }, [brand.id])
+    }, [account.id])
 
     return (
         <div className={classes.root}>

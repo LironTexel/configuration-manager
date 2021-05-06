@@ -66,7 +66,7 @@ const Navbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const auth = useSelector((state) => state?.firebase?.auth);
-    const isOpen = useSelector((state) => state.misc.isBrandsDrawerOpen);
+    const isOpen = useSelector((state) => state.misc.isAccountsDrawerOpen);
     const isLoggedIn = auth?.uid;
     const profile = useSelector((state) => state?.firebase?.profile);
 

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FileField = (props) => {
     const { defaultValue, uploadDirectoryPath, onChange, isImage, fileName } = props;
-    const [ fileUrl, setFileUrl ] = useState('');
+    const [ fileUrl, setFileUrl ] = useState(defaultValue || '');
     const classes = useStyles();
 
     useEffect(() => {

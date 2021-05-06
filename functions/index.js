@@ -12,32 +12,32 @@ const app = express();
 //   response.send("Hello from Firebase!");
 // });
 
-exports.getBrand = functions.https.onRequest((request, response) => {
-    functions.logger.info("Hello logs!", {structuredData: true});
-    functions.logger.info('request:' + JSON.stringify(request), {structuredData: true});
-    response.send("Hello from Firebase!");
-});
+// exports.getAccount = functions.https.onRequest((request, response) => {
+//     functions.logger.info("Hello logs!", {structuredData: true});
+//     functions.logger.info('request:' + JSON.stringify(request), {structuredData: true});
+//     response.send("Hello from Firebase!");
+// });
 
-exports.brands = functions.https.onRequest(app);
+exports.accounts = functions.https.onRequest(app);
 
 app.get('/', async (req, res) => {
-    const brandsSnapshot = await admin.firestore().collection('brands').get();
+    const accountsSnapshot = await admin.firestore().collection('accounts').get();
 
-    let brands = [];
-    brandsSnapshot.forEach(doc => {
+    let accounts = [];
+    accountsSnapshot.forEach(doc => {
         let id = doc.id;
         let data = doc.data();
 
-        brands.push({ id, ...data });
+        accounts.push({ id, ...data });
     })
 
-    res.status(200).send(JSON.stringify(brands));
+    res.status(200).send(JSON.stringify(accounts));
 })
 
-app.get('/:brandId', async (req, res) => {
-    const brandSnapshot = await admin.firestore().collection('brands').doc(req.params.brandId).get();
+app.get('/:accountId', async (req, res) => {
+    const accountSnapshot = await admin.firestore().collection('accounts').doc(req.params.accountId).get();
 
-    res.status(200).send(JSON.stringify(brandSnapshot.data()));
+    res.status(200).send(JSON.stringify(accountSnapshot.data()));
 
 })
 
@@ -47,13 +47,13 @@ const createNotification = (notification => {
       .then(doc => console.log('notification added', doc));
 })
 
-exports.brandCreated = functions.firestore
-    .document('brands/{brandId}')
+exports.accountCreated = functions.firestore
+    .document('accounts/{accountId}')
     .onCreate((doc) => {
-      const brand = doc.data();
+      const account = doc.data();
       const notification = {
-        content: 'new brand added',
-        user: `${brand.createdBy}`,
+        content: 'new account added',
+        user: `${account.createdBy}`,
         time: admin.firestore.FieldValue.serverTimestamp()
       }
 

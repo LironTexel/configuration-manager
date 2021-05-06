@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import {Typography} from "@material-ui/core";
 
 const Dashboard = () => {
-    // const brands = useSelector((state) => state?.firestore?.ordered?.brands);
+    // const accounts = useSelector((state) => state?.firestore?.ordered?.accounts);
     const notifications = useSelector((state) => state?.firestore?.ordered?.notifications);
     const auth = useSelector((state) => state?.firebase?.auth);
 
