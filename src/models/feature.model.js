@@ -7,17 +7,20 @@ export const CreateFeatureSchema = (account) =>
             id: yup
                 .number()
                 .required('ID is required')
-                .test("UniqueID", "ID already exists", value => {
-                    return !account || !account.categories.find(category =>
-                        category.content.find(feature => feature.id === value))
+                .test("UniqueID", "ID already exists", (value, context) => {
+                    const isDirty = context.parent.originalId !== value;
+                    return !isDirty ||
+                        (!account || !account.categories.find(category =>
+                            category.content.find(feature => feature.id === value))
+                        )
                 }),
             title: yup.string().required('Title is required'),
             // type: yup.mixed().oneOf(['VOD', 'Other']),
             description: yup.string(),
             url: yup.string().url().required('Feature url is required'),
-            // duration: yup.number().positive().integer(),
-            // subtitles: yup.string(),
-            // isAvailable: yup.boolean()
+            duration: yup.number().positive().integer(),
+            subtitles: yup.string(),
+            isAvailable: yup.boolean(),
             metadata: yup.object().shape({
                 cast: yup.string(),
                 director: yup.string(),

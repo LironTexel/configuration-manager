@@ -37,7 +37,6 @@ const EditAccount = () => {
     const auth = useSelector((state) => state?.firebase?.auth);
     const { control, handleSubmit, formState: { errors }, setValue } = useForm();
     const classes = useStyles();
-    console.log({accounts})
 
     const [ account, setAccount ] = useState({});
 

@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     CssBaseline, Drawer,
     List, ListItem, ListItemText,
-    Divider, IconButton, Typography, Box, ListItemIcon
+    Divider, IconButton, Box, ListItemIcon
 } from '@material-ui/core';
 import { drawerWidth } from "../../consts";
 import {useDispatch, useSelector} from "react-redux";
@@ -87,8 +87,8 @@ const AccountsDrawer = () => {
     const dispatch = useDispatch();
     const isOpen = useSelector((state) => state.misc.isAccountsDrawerOpen);
     const accounts = useSelector((state) => state?.firestore?.ordered?.accounts);
-    const firestore = useSelector((state) => state?.firestore);
-    console.log({firestore})
+    // const firestore = useSelector((state) => state?.firestore);
+    // console.log({firestore})
 
     const toggleDrawer = () => {
         dispatch({ type: 'TOGGLE_DRAWER' });
@@ -125,8 +125,8 @@ const AccountsDrawer = () => {
                                         : <StoreMallDirectoryTwoToneIcon className={classes.accountDefaultLogo}/>
                                     }
                                 </ListItemIcon>
-                                <ListItemText textOverflow="ellipsis"
-                                              primary={<Typography>{account.name}</Typography>}
+                                <ListItemText textoverflow="ellipsis"
+                                              primary={<Box textOverflow="ellipsis" overflow="hidden">{account.name}</Box>}
                                               secondary={
                                                   <Box component="div"
                                                        className={classes.accountItemTextSecondary}

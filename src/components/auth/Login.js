@@ -44,8 +44,6 @@ const Login = () => {
 
     const onSubmit = (data) => {
         const { email, password } = data;
-        console.log(password);
-        console.log(email);
         dispatch(loginUser({ email, password }));
     };
 

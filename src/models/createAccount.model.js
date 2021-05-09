@@ -6,11 +6,13 @@ export const CreateAccountSchema = (accounts) =>
         yup.object().shape({
             name: yup
                 .string()
-                .required('Name is required'),
+                .required('Name is required')
+                .matches(/^[\w.-]+$/, 'Invalid name'),
             id: yup
                 .string()
                 .required('ID is required')
                 .test("UniqueID", "ID already exists", value => !accounts[value])
+                .matches(/^\w+$/, 'Invalid ID')
                 .length(6, 'ID must be 6 characters long'),
         })
     ), [accounts]);

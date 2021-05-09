@@ -32,10 +32,11 @@ const AddCategory = ({ account }) => {
             cat.name.toLowerCase() === categoryName.toLowerCase())
 
         if (categoryName && !categoryExists) {
-            setHasError(false);
-            console.log({hasError});
             dispatch(addCategory(categoryName, {...account}));
             //TODO clear content
+            setHasError(false);
+            setIsExpanded(false);
+            setCategoryName('');
         }
         else setHasError(true);
     };
@@ -63,6 +64,8 @@ const AddCategory = ({ account }) => {
                             <Button color="primary"
                                     disabled={!categoryName}
                                     onClick={handleAddCategory}>Add</Button>
+                            <Button color="primary"
+                                    onClick={() => setIsExpanded(false)}>Cancel</Button>
                         </>
                     :
                         <Button color="primary"

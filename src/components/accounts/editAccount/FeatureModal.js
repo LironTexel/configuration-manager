@@ -9,6 +9,8 @@ import {
     Button,
     Typography,
     makeStyles,
+    Checkbox,
+    FormControlLabel,
 } from '@material-ui/core';
 // import {FEATURE_TYPES} from "../../../consts";
 import {FEATURE_TAGS} from "../../../consts";
@@ -27,7 +29,7 @@ const useStyles = makeStyles(() => ({
     dialogContent: {
         display: 'flex',
         flexDirection: 'column',
-        maxHeight: '700px',
+        height: '650px',
         flexGrow: 0,
         placeItems: 'flex-start',
     },
@@ -49,7 +51,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
     const classes = useStyles();
     const isNewFeature = !feature;
     const featureDetails = { ...feature };
-    const { handleSubmit, formState: { errors }, control } = useForm({
+    const { handleSubmit, formState: { errors }, control, setValue } = useForm({
         resolver: yupResolver(CreateFeatureSchema(account))
     });
 
@@ -57,6 +59,24 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
         console.log({data});
         // dispatch(({  }));
     };
+
+    setValue( 'originalId', feature?.id); // for verification
+    setValue( 'id', feature?.id);
+    setValue( 'title', feature?.title || '');
+    setValue( 'description', feature?.description || '');
+    setValue( 'url', feature?.url || '');
+    setValue( 'duration', feature?.duration || '');
+    setValue( 'subtitles', feature?.subtitles || '');
+    setValue( 'isAvailable', feature?.isAvailable || '');
+    setValue( 'labels', feature?.labels || '');
+    setValue( 'metadata.cast', feature?.metadata?.cast || '');
+    setValue( 'metadata.director', feature?.metadata?.director || '');
+    setValue( 'metadata.producer', feature?.metadata?.producer || '');
+    setValue( 'images.preview', feature?.images?.preview || '');
+    setValue( 'images.main', feature?.images?.main || '');
+    setValue( 'images.watch_together', feature?.images?.watch_together || '');
+    setValue( 'images.invitation', feature?.images?.invitation || '');
+    setValue( 'tags', feature?.tags || '');
 
     return (
         <>
@@ -69,10 +89,11 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                 aria-describedby="scroll-dialog-description"
             >
                 <DialogTitle id="scroll-dialog-title">
-                    <Typography>{ isNewFeature ? 'Create a new feature' : `Edit ${feature?.title}` }</Typography>
+                    <Typography component={'span'}>{ isNewFeature ? 'Create a new feature' : `Edit ${feature?.title}` }</Typography>
                 </DialogTitle>
 
-                    <form noValidate
+                    <form action=""
+                          noValidate
                           autoComplete="off"
                           onSubmit={handleSubmit(onSubmit)}>
 
@@ -87,6 +108,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['id']}
                                             className={classes.input}
                                             label="Feature ID"
+                                            key={featureDetails.id}
                                             defaultValue={featureDetails?.id || ''}
                                             helperText={errors.id?.message}
                                             onChange={onChange}
@@ -104,6 +126,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['title']}
                                             className={classes.input}
                                             label="Feature title"
+                                            key={featureDetails.title}
                                             defaultValue={featureDetails?.title || ''}
                                             helperText={errors.title?.message}
                                             onChange={onChange}
@@ -121,6 +144,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['description']}
                                             className={classes.input}
                                             label="Description"
+                                            key={featureDetails.description}
                                             defaultValue={featureDetails?.description || ''}
                                             helperText={errors.description?.message}
                                             onChange={onChange}
@@ -137,6 +161,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['url']}
                                             className={classes.input}
                                             label="Url"
+                                            key={featureDetails.url}
                                             defaultValue={featureDetails?.url || ''}
                                             helperText={errors.url?.message}
                                             onChange={onChange}
@@ -154,6 +179,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['duration']}
                                             className={classes.input}
                                             label="Duration"
+                                            key={featureDetails.duration}
                                             defaultValue={featureDetails?.duration || ''}
                                             type="number"
                                             helperText={errors.duration?.message}
@@ -161,6 +187,69 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             fullWidth
                                             required
                                         />
+                                    }
+                                />
+
+                                <Controller
+                                    name='subtitles'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TextField
+                                            error={errors['subtitles']}
+                                            className={classes.input}
+                                            label="Subtitles"
+                                            key={featureDetails.subtitles}
+                                            defaultValue={featureDetails?.subtitles || ''}
+                                            helperText={errors.subtitles?.message}
+                                            onChange={onChange}
+                                            fullWidth
+                                            required
+                                        />
+                                    }
+                                />
+
+                                <Controller
+                                    name='labels'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TextField
+                                            error={errors['labels']}
+                                            className={classes.input}
+                                            label="Labels"
+                                            key={featureDetails.labels}
+                                            defaultValue={featureDetails?.labels || ''}
+                                            helperText={errors.labels?.message}
+                                            onChange={onChange}
+                                            fullWidth
+                                            required
+                                        />
+                                    }
+                                />
+
+                                <Controller
+                                    name='isAvailable'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <FormControlLabel
+                                            value={featureDetails?.isAvailable}
+                                            className={classes.input}
+                                            key={featureDetails.isAvailable}
+                                            control={<Checkbox color="primary" />}
+                                            label="Is available"
+                                            labelPlacement="start"
+                                            onChange={onChange}
+                                            required
+                                        />
+                                        // <TextField
+                                        //     error={errors['isAvailable']}
+                                        //     className={classes.input}
+                                        //     label="Is available"
+                                        //     defaultValue={featureDetails?.isAvailable || ''}
+                                        //     helperText={errors.isAvailable?.message}
+                                        //     onChange={onChange}
+                                        //     fullWidth
+                                        //     required
+                                        // />
                                     }
                                 />
 
@@ -190,6 +279,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                         <TextField
                                             error={errors['metadata.cast']}
                                             className={classes.input}
+                                            key={featureDetails.metadata?.cast}
                                             defaultValue={featureDetails?.metadata?.cast || ''}
                                             label="Cast"
                                             helperText={errors.metadata?.cast?.message}

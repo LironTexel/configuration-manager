@@ -92,7 +92,7 @@ const FeaturePreview = ({ feature, account }) => {
                     </div>
                     <Box component="div"
                          className={classes.featureTitle}
-                         textOverflow="ellipsis"
+                         textoverflow="ellipsis"
                          whiteSpace="nowrap"
                          overflow="hidden">
                         {feature?.title || 'add feature'}

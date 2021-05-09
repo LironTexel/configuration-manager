@@ -28,6 +28,14 @@ const accountReducer = ( state = initState, action) => {
             console.log('error adding category account', action.err);
             return state;
         }
+        case 'RENAME_CATEGORY': {
+            console.log('rename category', action.account);
+            return state;
+        }
+        case 'RENAME_CATEGORY_ERROR': {
+            console.log('error renaming category account', action.err);
+            return state;
+        }
         default: {
             console.log('unknown action', action.type);
             return state;

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     },
     imagePreview: {
-        maxWidth: '200px',
+        maxWidth: '300px',
         maxHeight: `calc(100% - ${theme.spacing(2)}px)`,
         height: '100%',
         width: '100%',

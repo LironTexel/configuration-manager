@@ -1,6 +1,6 @@
 export const createAccount = (account) => {
     return (dispatch, getState, getFirebase ) => {
-        // async call to DB
+
         const firestore = getFirebase().firestore();
         // const uid = getState().firebase.auth.uid;
         const username = getState().firebase.profile.username;
@@ -19,7 +19,7 @@ export const createAccount = (account) => {
 
 export const editAccount = (account) => {
     return (dispatch, getState, getFirebase ) => {
-        // async call to DB
+
         const firestore = getFirebase().firestore();
         firestore.collection('accounts').doc(account.id).update({
             ...account,
@@ -31,9 +31,47 @@ export const editAccount = (account) => {
     }
 }
 
+export const editCategoryName = (account, categoryIndex, newName) => {
+    return (dispatch, getState, getFirebase ) => {
+
+        const firestore = getFirebase().firestore();
+        let categories =  [ ...account.categories ];
+        let category = { ...categories[categoryIndex]}
+        category.name = newName;
+        categories.splice(categoryIndex, 1 , category)
+
+        firestore.collection('accounts').doc(account.id).update({
+            ...account,
+            categories
+        }).then(() => {
+            dispatch({ type: 'EDIT_ACCOUNT', account })
+        }).catch((err) => {
+            dispatch({ type: 'EDIT_ACCOUNT_ERROR', err })
+        })
+    }
+}
+
+export const deleteCategory = (account, categoryIndex) => {
+    return (dispatch, getState, getFirebase ) => {
+
+        const firestore = getFirebase().firestore();
+        let categories =  [ ...account.categories ];
+        categories.splice(categoryIndex, 1)
+
+        firestore.collection('accounts').doc(account.id).update({
+            ...account,
+            categories
+        }).then(() => {
+            dispatch({ type: 'EDIT_ACCOUNT', account })
+        }).catch((err) => {
+            dispatch({ type: 'EDIT_ACCOUNT_ERROR', err })
+        })
+    }
+}
+
 export const addCategory = (categoryName, account) => {
     return (dispatch, getState, getFirebase ) => {
-        // async call to DB
+
         const accountCategories = [...(account.categories || [])];
         accountCategories.push({ name: categoryName, content: [] })
         const firestore = getFirebase().firestore();
