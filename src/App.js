@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-// import Navbar from "./components/layout/navbar/Navbar";
 import Layout from "./components/layout/Layout";
 import Dashboard from "./components/dashboard/Dashboard";
 import EditAccount from "./components/accounts/EditAccount";
@@ -8,9 +7,14 @@ import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import CreateAccount from "./components/accounts/CreateAccount";
 import {firestoreConnect} from "react-redux-firebase";
-// import {useSelector} from "react-redux";
+import Notifications from 'react-notification-system-redux';
+import {useSelector} from "react-redux";
+import {notificationsStyle} from "./styles/theme";
 
 function App() {
+    const notifications = useSelector((state) => {
+        return state.notifications;
+    });
 
   return (
       <BrowserRouter>
@@ -24,6 +28,7 @@ function App() {
                     <Route path='/signup' component={ SignUp }/>
                     <Route path='/create' component={ CreateAccount }/>
                 </Switch>
+                <Notifications notifications={notifications} style={notificationsStyle} />
             </Layout>
           </header>
         </div>

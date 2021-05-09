@@ -7,6 +7,10 @@ import MovieCreationTwoToneIcon from '@material-ui/icons/MovieCreationTwoTone';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import {Colors} from "../../../styles/colors";
 import FeatureModal from "./FeatureModal";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AlertDialog from "../../shared/AlertDialog";
+import {useDispatch} from "react-redux";
+import {deleteFeature} from "../../../store/actions/accountActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +32,21 @@ const useStyles = makeStyles((theme) => ({
             bottom: '2px',
             opacity: 1,
             boxShadow: `1px 1px 5px 1px ${Colors.MID_GREY}`,
-        }
+            '& .delete-feature-icon': {
+                display: 'block',
+            },
+        },
+        '& .delete-feature-icon': {
+            display: 'none',
+            position: 'absolute',
+            top: theme.spacing(1),
+            right: theme.spacing(1),
+            color: Colors.WHITE,
+            '&:hover': {
+                color: Colors.RED,
+
+            }
+        },
     },
     preview: {
         display: 'flex',
@@ -63,9 +81,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const FeaturePreview = ({ feature, account }) => {
+const FeaturePreview = ({ account, categoryIndex, feature, featureIndex }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [alertDialogProps, setAlertDialogProps] = useState({});
+    const dispatch = useDispatch();
 
     const handleOpen = () => {
         setOpen(true);
@@ -74,6 +94,23 @@ const FeaturePreview = ({ feature, account }) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleFeatureDelete = e => {
+        e.stopPropagation();
+        setAlertDialogProps({
+            isOpen: true,
+            title: `Delete feature "${feature.title}"`,
+            content: 'This action is irreversible. Would you like to proceed?',
+            actionLeftText: 'Cancel',
+            actionLeft: () => setAlertDialogProps({ isOpen: false}),
+            actionRightText: 'Delete',
+            actionRight: () => {
+                dispatch(deleteFeature(account, categoryIndex, featureIndex));
+                console.log('delete feature');
+                setAlertDialogProps({ isOpen: false})
+            },
+        })
+    }
 
     return (
         <div className={classes.root}>
@@ -90,6 +127,10 @@ const FeaturePreview = ({ feature, account }) => {
                             :<AddBoxRoundedIcon/>
                         }
                     </div>
+                    {
+                        feature &&
+                        <DeleteIcon className="delete-feature-icon" onClick={handleFeatureDelete}/>
+                    }
                     <Box component="div"
                          className={classes.featureTitle}
                          textoverflow="ellipsis"
@@ -97,10 +138,18 @@ const FeaturePreview = ({ feature, account }) => {
                          overflow="hidden">
                         {feature?.title || 'add feature'}
                     </Box>
-                    {/*<Typography variant="button" >{feature?.title || 'add feature'}</Typography>*/}
                 </div>
             </Button>
             <FeatureModal open={open} handleClose={handleClose} feature={feature} account={account}/>
+            <AlertDialog title={alertDialogProps.title}
+                         content={alertDialogProps.content}
+                         isOpen={alertDialogProps.isOpen}
+                         actionLeftText={alertDialogProps.actionLeftText}
+                         actionLeft={alertDialogProps.actionLeft}
+                         actionRightText={alertDialogProps.actionRightText}
+                         actionRight={alertDialogProps.actionRight}
+                         handleClose={alertDialogProps.handleClose}
+            />
         </div>
     );
 };

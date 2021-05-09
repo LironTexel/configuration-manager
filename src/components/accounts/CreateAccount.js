@@ -7,6 +7,7 @@ import {Redirect} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateAccountSchema } from '../../models/createAccount.model'
+import {DEFAULT_LOGO_URL} from "../../consts";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const CreateAccount = (props) => {
     const dispatch = useDispatch();
     const accounts = useSelector((state) => state?.firestore?.data?.accounts);
+    const createError = useSelector((state) => state?.account?.createError);
 
     const { handleSubmit, formState: { errors }, control } = useForm({
         resolver: yupResolver(CreateAccountSchema(accounts))
@@ -41,8 +43,8 @@ const CreateAccount = (props) => {
 
     const onSubmit = (data) => {
         const { name, id } = data;
-        dispatch(createAccount({ id, name }));
-        props.history.push('/'); // TODO redirect only when success
+        dispatch(createAccount({ id, name, logoUrl: DEFAULT_LOGO_URL }));
+        props.history.push('/');
     };
 
     if (!auth.uid) return <Redirect to='/login'/>;
@@ -96,7 +98,11 @@ const CreateAccount = (props) => {
                                 className={classes.createButton}
                                 type="submit">Create Account</Button>
                         </form>
-
+                        {createError &&
+                            <div className={classes.error}>
+                                <p>{createError}</p>
+                            </div>
+                        }
                     </Paper>
                 </Grid>
             </Grid>

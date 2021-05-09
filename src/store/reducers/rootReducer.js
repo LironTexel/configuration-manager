@@ -4,6 +4,7 @@ import { firebaseReducer } from "react-redux-firebase";
 import authReducer from "./authReducer";
 import accountReducer from "./accountReducer";
 import miscReducer from "./miscReducer";
+import { reducer as notifications } from 'react-notification-system-redux';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     misc: miscReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer,
+    notifications,
 })
 
 export default rootReducer;

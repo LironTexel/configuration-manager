@@ -1,3 +1,5 @@
+import {showErrorNotification, showSuccessNotification} from "./miscActions";
+
 export const loginUser = (credentials) => {
     return (dispatch, getState, getFirebase ) => {
         // async call to DB
@@ -7,8 +9,11 @@ export const loginUser = (credentials) => {
             credentials.password
         ).then(() => {
             dispatch({ type: 'LOGIN_SUCCESS', credentials })
+            showSuccessNotification(dispatch, 'Success logging in');
         }).catch((err) => {
             dispatch({ type: 'LOGIN_ERROR', err })
+            showErrorNotification(dispatch, 'Error logging in');
+            console.log('Login error', err);
         })
     }
 }
@@ -20,8 +25,11 @@ export const logoutUser = () => {
         firebase.auth().signOut(
         ).then(() => {
             dispatch({ type: 'LOGOUT_SUCCESS' })
+            showSuccessNotification(dispatch, 'Success logging out');
         }).catch((err) => {
             dispatch({ type: 'LOGOUT_ERROR', err })
+            showErrorNotification(dispatch, 'Error logging out');
+            console.log('Logout error', err);
         })
     }
 }
@@ -37,12 +45,14 @@ export const signUpUser = (newUser) => {
         ).then((res) => {
             return firestore.collection('users').doc(res.user.uid).set({
                 username: newUser.username,
-                // more fields if relevant
             })
         }).then(() => {
             dispatch({ type: 'SIGNUP_SUCCESS' })
+            showSuccessNotification(dispatch, 'Signup success');
         }).catch((err) => {
             dispatch({ type: 'SIGNUP_ERROR', err })
+            showErrorNotification(dispatch, 'Signup error');
+            console.log('Signup error', err);
         })
     }
 }

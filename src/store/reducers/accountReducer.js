@@ -1,16 +1,22 @@
 const initState = {
-    accounts: []
+    createError: null,
 };
 
 const accountReducer = ( state = initState, action) => {
     switch (action.type) {
         case 'CREATE_ACCOUNT': {
             console.log('created account', action.account);
-            return state;
+            return {
+                ...state,
+                createError: null
+            };
         }
         case 'CREATE_ACCOUNT_ERROR': {
             console.log('error creating account', action.err);
-            return state;
+            return {
+                ...state,
+                createError: 'Error creating account'
+            };
         }
         case 'EDIT_ACCOUNT': {
             console.log('edited account', action.account);

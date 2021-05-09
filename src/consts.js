@@ -1,5 +1,7 @@
 export const drawerWidth = 240;
 
+export const DEFAULT_LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/json-configuration-manager.appspot.com/o/accounts%2Fdefault_logo.png?alt=media";
+
 export const FEATURE_TYPES = {
     VOD: 'VOD',
     OTHER: 'Other'

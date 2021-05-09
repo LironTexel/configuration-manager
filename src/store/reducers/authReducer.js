@@ -15,7 +15,7 @@ const authReducer = ( state = initState, action) => {
             console.log('error logging in', action.err);
             return {
                 ...state,
-                authError: 'login failed'
+                authError: 'Login failed'
             };
         }
         case 'LOGOUT_SUCCESS': {
@@ -42,7 +42,7 @@ const authReducer = ( state = initState, action) => {
             };
         }
         default: {
-            console.log('unknown action', action.type);
+            // console.log('unknown action', action.type);
             return state;
         }
     }

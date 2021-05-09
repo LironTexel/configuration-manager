@@ -22,7 +22,6 @@ import AlertDialog from "../../shared/AlertDialog";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        // borderBottom: '1px solid rgba(0, 0, 0, .1)',
     },
     addCategory: {
         padding: theme.spacing(0, 0, 2)
@@ -112,7 +111,7 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
     const [name, setName] = useState(category.name || '');
     const [nameErrorMessage, setNameErrorMessage] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
-    const [dialogProps, setDialogProps] = useState({});
+    const [alertDialogProps, setAlertDialogProps] = useState({});
     const dispatch = useDispatch();
 
     const toggleEdit = (e, isEdit) => {
@@ -149,20 +148,20 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
 
     const handleDelete = e => {
         e.stopPropagation();
-        setDialogProps({
+        setAlertDialogProps({
             isOpen: true,
             title: `Delete category "${category.name}"`,
             content: 'This action is irreversible. Would you like to proceed?',
             actionLeftText: 'Cancel',
-            actionLeft: () => setDialogProps({ isOpen: false}),
+            actionLeft: () => setAlertDialogProps({ isOpen: false}),
             actionRightText: 'Delete',
             actionRight: () => {
                 dispatch(deleteCategory(account, categoryIndex));
-                console.log('delete'); //TODO dispatch delete here
-                setDialogProps({ isOpen: false})
+                setAlertDialogProps({ isOpen: false})
             },
         })
     }
+
 
     useEffect(() => {
         setName(category.name);
@@ -199,10 +198,12 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
                 </StyledAccordionSummary>
                 <StyledAccordionDetails>
                     {
-                        category?.content?.map(feature =>
+                        category?.content?.map((feature, featureIndex) =>
                             <div className={classes.featurePreview}>
                                 <FeaturePreview key={ feature.id }
                                                 feature={feature}
+                                                categoryIndex={categoryIndex}
+                                                featureIndex={featureIndex}
                                                 account={account}/></div>
                         )
                     }
@@ -211,14 +212,14 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
                     </div>
                 </StyledAccordionDetails>
             </StyledAccordion>
-            <AlertDialog title={dialogProps.title}
-                         content={dialogProps.content}
-                         isOpen={dialogProps.isOpen}
-                         actionLeftText={dialogProps.actionLeftText}
-                         actionLeft={dialogProps.actionLeft}
-                         actionRightText={dialogProps.actionRightText}
-                         actionRight={dialogProps.actionRight}
-                         handleClose={dialogProps.handleClose}
+            <AlertDialog title={alertDialogProps.title}
+                         content={alertDialogProps.content}
+                         isOpen={alertDialogProps.isOpen}
+                         actionLeftText={alertDialogProps.actionLeftText}
+                         actionLeft={alertDialogProps.actionLeft}
+                         actionRightText={alertDialogProps.actionRightText}
+                         actionRight={alertDialogProps.actionRight}
+                         handleClose={alertDialogProps.handleClose}
             />
         </div>
     )

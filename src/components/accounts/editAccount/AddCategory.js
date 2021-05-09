@@ -32,7 +32,7 @@ const AddCategory = ({ account }) => {
             cat.name.toLowerCase() === categoryName.toLowerCase())
 
         if (categoryName && !categoryExists) {
-            dispatch(addCategory(categoryName, {...account}));
+            dispatch(addCategory(account, categoryName));
             //TODO clear content
             setHasError(false);
             setIsExpanded(false);
