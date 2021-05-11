@@ -33,15 +33,19 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         alignSelf: 'center',
         marginBottom: theme.spacing(3),
-        // fontSize: '1.5em',
+    },
+    section: {
+        border: '1px solid lightgray',
+        padding: theme.spacing(3),
+        borderRadius: '5px'
     },
     divider: {
-        margin: theme.spacing(3),
+        margin: theme.spacing(1),
     },
     dialogContent: {
         display: 'flex',
         flexDirection: 'column',
-        height: '650px',
+        height: '750px',
         flexGrow: 0,
         placeItems: 'flex-start',
     },
@@ -131,331 +135,338 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                           onSubmit={handleSubmit(onSubmit)}>
 
                         <DialogContent dividers className={classes.dialogContent}>
-                            <DialogContentText className={classes.sectionTitle}>
-                                <Typography>General Info</Typography>
-                            </DialogContentText>
                             <div className={classes.formBody}>
-                                <Controller
-                                    name='id'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['id']}
-                                            className={classes.input}
-                                            label="Feature ID"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            // key={featureDetails.id}
-                                            defaultValue={featureDetails?.id || ''}
-                                            helperText={errors.id?.message}
-                                            onChange={onChange}
-                                            type="number"
-                                            disabled={!isNewFeature}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
-                                <Controller
-                                    name='title'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['title']}
-                                            className={classes.input}
-                                            label="Feature title"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            // key={featureDetails.title}
-                                            defaultValue={featureDetails?.title || ''}
-                                            helperText={errors.title?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
-
-                                <Controller
-                                    name='description'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['description']}
-                                            className={classes.input}
-                                            label="Description"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            // key={featureDetails.description}
-                                            defaultValue={featureDetails?.description || ''}
-                                            helperText={errors.description?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
-
-                                <Controller
-                                    name='url'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['url']}
-                                            className={classes.input}
-                                            label="Url"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            // key={featureDetails.url}
-                                            defaultValue={featureDetails?.url || ''}
-                                            helperText={errors.url?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
-
-                                <Controller
-                                    name='subtitles'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['subtitles']}
-                                            className={classes.input}
-                                            label="Subtitles"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            // key={featureDetails.subtitles}
-                                            defaultValue={featureDetails?.subtitles || ''}
-                                            helperText={errors.subtitles?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
-
-                                <div className={clsx(classes.input, classes.multipleInputs)}>
+                                <div className={classes.section}>
+                                    <DialogContentText className={classes.sectionTitle}>
+                                        <Typography>General Info</Typography>
+                                    </DialogContentText>
                                     <Controller
-                                        name='type'
-                                        control={control}
-                                        render={({ field: {onChange} }) =>
-                                            <SingleSelectField
-                                                defaultValue={featureDetails?.type}
-                                                selectDictionary={FEATURE_TYPES}
-                                                error={errors['type']?.message}
-                                                onChange={onChange}
-                                                isRequired
-                                            />
-                                        }
-                                    />
-                                    <Controller
-                                        name='duration'
+                                        name='id'
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['duration']}
+                                                error={errors['id']}
                                                 className={classes.input}
-                                                label="Duration"
+                                                label="Feature ID"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.duration}
-                                                defaultValue={featureDetails?.duration || ''}
+                                                // key={featureDetails.id}
+                                                defaultValue={featureDetails?.id || ''}
+                                                helperText={errors.id?.message}
+                                                onChange={onChange}
                                                 type="number"
-                                                helperText={errors.duration?.message}
-                                                onChange={onChange}
-                                                // fullWidth
+                                                disabled={!isNewFeature}
+                                                fullWidth
                                                 required
                                             />
                                         }
                                     />
                                     <Controller
-                                        name='isAvailable'
+                                        name='title'
                                         control={control}
                                         render={({ field: {onChange} }) =>
-                                            <FormControlLabel
-                                                value={featureDetails?.isAvailable || false}
-                                                // key={featureDetails.isAvailable}
-                                                control={<Checkbox color="primary" />}
-                                                label="Is available"
-                                                labelPlacement="start"
+                                            <TextField
+                                                error={errors['title']}
+                                                className={classes.input}
+                                                label="Feature title"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                // key={featureDetails.title}
+                                                defaultValue={featureDetails?.title || ''}
+                                                helperText={errors.title?.message}
                                                 onChange={onChange}
+                                                fullWidth
                                                 required
                                             />
                                         }
                                     />
-                                </div>
 
-
-                                <Divider className={classes.divider} variant="middle" />
-                                <DialogContentText className={classes.sectionTitle}>
-                                    <Typography>Metadata</Typography>
-                                </DialogContentText>
-                                <Controller
-                                    name='metadata.cast'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['metadata.cast']}
-                                            className={classes.input}
-                                            // key={featureDetails.metadata?.cast}
-                                            defaultValue={featureDetails?.metadata?.cast || ''}
-                                            label="Cast"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            helperText={errors.metadata?.cast?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                        />
-                                    }
-                                />
-                                <Controller
-                                    name='metadata.director'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['metadata.director']}
-                                            className={classes.input}
-                                            defaultValue={featureDetails?.metadata?.director || ''}
-                                            label="Director"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            helperText={errors.metadata?.director?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                        />
-                                    }
-                                />
-
-                                <Controller
-                                    name='metadata.producer'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['metadata.producer']}
-                                            className={classes.input}
-                                            defaultValue={featureDetails?.metadata?.producer || ''}
-                                            label="Producer"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            helperText={errors.metadata?.producer?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                        />
-                                    }
-                                />
-
-                                <Controller
-                                    name='metadata.creator'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['metadata.creator']}
-                                            className={classes.input}
-                                            defaultValue={featureDetails?.metadata?.creator || ''}
-                                            label="Creator"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            helperText={errors.metadata?.creator?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                        />
-                                    }
-                                />
-
-                                <Divider className={classes.divider} variant="middle" />
-                                <DialogContentText className={classes.sectionTitle}>
-                                    <Typography>Images</Typography>
-                                </DialogContentText>
-                                <div className={classes.imagesSection}>
                                     <Controller
-                                        name='images.preview'
+                                        name='description'
                                         control={control}
                                         render={({ field: {onChange} }) =>
-                                            <FileField
-                                                defaultValue={featureDetails?.images?.preview}
-                                                error={errors['images.preview']}
-                                                className={classes.image}
-                                                uploadDirectoryPath={`accounts/${account.id}/images`}
+                                            <TextField
+                                                error={errors['description']}
+                                                className={classes.input}
+                                                label="Description"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                // key={featureDetails.description}
+                                                defaultValue={featureDetails?.description || ''}
+                                                helperText={errors.description?.message}
                                                 onChange={onChange}
-                                                isImage
-                                                fileName={'Preview'}/>
+                                                fullWidth
+                                                required
+                                            />
                                         }
                                     />
+
                                     <Controller
-                                        name='images.main'
+                                        name='url'
                                         control={control}
                                         render={({ field: {onChange} }) =>
-                                            <FileField
-                                                defaultValue={featureDetails?.images?.main}
-                                                error={errors['images.main']}
-                                                className={classes.image}
-                                                uploadDirectoryPath={`accounts/${account.id}/images`}
+                                            <TextField
+                                                error={errors['url']}
+                                                className={classes.input}
+                                                label="Url"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                // key={featureDetails.url}
+                                                defaultValue={featureDetails?.url || ''}
+                                                helperText={errors.url?.message}
                                                 onChange={onChange}
-                                                isImage
-                                                fileName={'Main'}/>
+                                                fullWidth
+                                                required
+                                            />
                                         }
                                     />
+
                                     <Controller
-                                        name='images.watch_together'
+                                        name='subtitles'
                                         control={control}
                                         render={({ field: {onChange} }) =>
-                                            <FileField
-                                                defaultValue={featureDetails?.images?.main}
-                                                error={errors['images.watch_together']}
-                                                className={classes.image}
-                                                uploadDirectoryPath={`accounts/${account.id}/images`}
+                                            <TextField
+                                                error={errors['subtitles']}
+                                                className={classes.input}
+                                                label="Subtitles"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                // key={featureDetails.subtitles}
+                                                defaultValue={featureDetails?.subtitles || ''}
+                                                helperText={errors.subtitles?.message}
                                                 onChange={onChange}
-                                                isImage
-                                                fileName={'Watch together'}/>
+                                                fullWidth
+                                                required
+                                            />
                                         }
                                     />
-                                    <Controller
-                                        name='images.invitation'
-                                        control={control}
-                                        render={({ field: {onChange} }) =>
-                                            <FileField
-                                                defaultValue={featureDetails?.images?.invitation}
-                                                error={errors['images.invitation']?.message}
-                                                className={classes.image}
-                                                uploadDirectoryPath={`accounts/${account.id}/images`}
-                                                onChange={onChange}
-                                                isImage
-                                                fileName={'invitation'}/>
-                                        }
-                                    />
+
+                                    <div className={clsx(classes.input, classes.multipleInputs)}>
+                                        <Controller
+                                            name='type'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <SingleSelectField
+                                                    defaultValue={featureDetails?.type}
+                                                    selectDictionary={FEATURE_TYPES}
+                                                    error={errors['type']?.message}
+                                                    onChange={onChange}
+                                                    isRequired
+                                                />
+                                            }
+                                        />
+                                        <Controller
+                                            name='duration'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <TextField
+                                                    error={errors['duration']}
+                                                    className={classes.input}
+                                                    label="Duration"
+                                                    variant={INPUT_STYLE_VARIANT}
+                                                    // key={featureDetails.duration}
+                                                    defaultValue={featureDetails?.duration || ''}
+                                                    type="number"
+                                                    helperText={errors.duration?.message}
+                                                    onChange={onChange}
+                                                    // fullWidth
+                                                    required
+                                                />
+                                            }
+                                        />
+                                        <Controller
+                                            name='isAvailable'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <FormControlLabel
+                                                    value={featureDetails?.isAvailable || false}
+                                                    // key={featureDetails.isAvailable}
+                                                    control={<Checkbox color="primary" />}
+                                                    label="Is available"
+                                                    labelPlacement="start"
+                                                    onChange={onChange}
+                                                    required
+                                                />
+                                            }
+                                        />
+                                    </div>
                                 </div>
 
                                 <Divider className={classes.divider} variant="middle" />
-                                <DialogContentText className={classes.sectionTitle}>
-                                    <Typography>Tags and labels</Typography>
-                                </DialogContentText>
-
-                                <div className={classes.input}>
+                                <div className={classes.section}>
+                                    <DialogContentText className={classes.sectionTitle}>
+                                        <Typography>Metadata</Typography>
+                                    </DialogContentText>
                                     <Controller
-                                        name='tags'
+                                        name='metadata.cast'
                                         control={control}
                                         render={({ field: {onChange} }) =>
-                                            <TagsField
-                                                defaultValue={featureDetails?.tags || []}
-                                                tagsDictionary={FEATURE_TAGS}
-                                                error={errors['tags']?.message}
+                                            <TextField
+                                                error={errors['metadata.cast']}
+                                                className={classes.input}
+                                                // key={featureDetails.metadata?.cast}
+                                                defaultValue={featureDetails?.metadata?.cast || ''}
+                                                label="Cast"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                helperText={errors.metadata?.cast?.message}
                                                 onChange={onChange}
-                                                styleVariant={'outlined'}
+                                                fullWidth
+                                            />
+                                        }
+                                    />
+                                    <Controller
+                                        name='metadata.director'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <TextField
+                                                error={errors['metadata.director']}
+                                                className={classes.input}
+                                                defaultValue={featureDetails?.metadata?.director || ''}
+                                                label="Director"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                helperText={errors.metadata?.director?.message}
+                                                onChange={onChange}
+                                                fullWidth
+                                            />
+                                        }
+                                    />
+
+                                    <Controller
+                                        name='metadata.producer'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <TextField
+                                                error={errors['metadata.producer']}
+                                                className={classes.input}
+                                                defaultValue={featureDetails?.metadata?.producer || ''}
+                                                label="Producer"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                helperText={errors.metadata?.producer?.message}
+                                                onChange={onChange}
+                                                fullWidth
+                                            />
+                                        }
+                                    />
+
+                                    <Controller
+                                        name='metadata.creator'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <TextField
+                                                error={errors['metadata.creator']}
+                                                className={classes.input}
+                                                defaultValue={featureDetails?.metadata?.creator || ''}
+                                                label="Creator"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                helperText={errors.metadata?.creator?.message}
+                                                onChange={onChange}
+                                                fullWidth
                                             />
                                         }
                                     />
                                 </div>
 
-                                <Controller
-                                    name='labels'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['labels']?.message}
-                                            className={classes.input}
-                                            label="Labels"
-                                            variant={INPUT_STYLE_VARIANT}
-                                            // key={featureDetails.labels}
-                                            defaultValue={featureDetails?.labels || ''}
-                                            helperText={errors.labels?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            // required
+                                <Divider className={classes.divider} variant="middle" />
+                                <div className={classes.section}>
+                                    <DialogContentText className={classes.sectionTitle}>
+                                        <Typography>Images</Typography>
+                                    </DialogContentText>
+                                    <div className={classes.imagesSection}>
+                                        <Controller
+                                            name='images.preview'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <FileField
+                                                    defaultValue={featureDetails?.images?.preview}
+                                                    error={errors['images.preview']}
+                                                    className={classes.image}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    onChange={onChange}
+                                                    isImage
+                                                    fileName={'Preview'}/>
+                                            }
                                         />
-                                    }
-                                />
+                                        <Controller
+                                            name='images.main'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <FileField
+                                                    defaultValue={featureDetails?.images?.main}
+                                                    error={errors['images.main']}
+                                                    className={classes.image}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    onChange={onChange}
+                                                    isImage
+                                                    fileName={'Main'}/>
+                                            }
+                                        />
+                                        <Controller
+                                            name='images.watch_together'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <FileField
+                                                    defaultValue={featureDetails?.images?.main}
+                                                    error={errors['images.watch_together']}
+                                                    className={classes.image}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    onChange={onChange}
+                                                    isImage
+                                                    fileName={'Watch together'}/>
+                                            }
+                                        />
+                                        <Controller
+                                            name='images.invitation'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <FileField
+                                                    defaultValue={featureDetails?.images?.invitation}
+                                                    error={errors['images.invitation']?.message}
+                                                    className={classes.image}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    onChange={onChange}
+                                                    isImage
+                                                    fileName={'invitation'}/>
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                <Divider className={classes.divider} variant="middle" />
+                                <div className={classes.section}>
+                                    <DialogContentText className={classes.sectionTitle}>
+                                        <Typography>Tags and labels</Typography>
+                                    </DialogContentText>
+
+                                    <div className={classes.input}>
+                                        <Controller
+                                            name='tags'
+                                            control={control}
+                                            render={({ field: {onChange} }) =>
+                                                <TagsField
+                                                    defaultValue={featureDetails?.tags || []}
+                                                    tagsDictionary={FEATURE_TAGS}
+                                                    error={errors['tags']?.message}
+                                                    onChange={onChange}
+                                                    styleVariant={'outlined'}
+                                                />
+                                            }
+                                        />
+                                    </div>
+
+                                    <Controller
+                                        name='labels'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <TextField
+                                                error={errors['labels']?.message}
+                                                className={classes.input}
+                                                label="Labels"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                // key={featureDetails.labels}
+                                                defaultValue={featureDetails?.labels || ''}
+                                                helperText={errors.labels?.message}
+                                                onChange={onChange}
+                                                fullWidth
+                                                // required
+                                            />
+                                        }
+                                    />
+                                </div>
                             </div>
 
                 </DialogContent>
