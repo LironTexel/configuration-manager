@@ -16,10 +16,10 @@ export const CreateFeatureSchema = (account) =>
                         )
                 }),
             title: yup.string().required('Title is required'),
-            type: yup.string().required('Feature type is required').oneOf(Object.values(FEATURE_TYPES)),
+            type: yup.string().required('Feature type is required').oneOf(Object.values(FEATURE_TYPES), 'Feature type is required'),
             description: yup.string().required('Description is required'),
             url: yup.string().url().required('Feature url is required'),
-            duration: yup.number().positive().integer().default(1),
+            duration: yup.number().required().positive().integer().typeError('Duration is required'),
             subtitles: yup.string().required('Subtitles field is required').default(''),
             isAvailable: yup.boolean().required().default(false),
             tags: yup.array().of(yup.string()).default([]),

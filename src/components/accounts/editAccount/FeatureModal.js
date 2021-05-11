@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     dialogContent: {
         display: 'flex',
         flexDirection: 'column',
-        height: '750px',
+        height: '700px',
         flexGrow: 0,
         placeItems: 'flex-start',
     },
@@ -83,18 +83,22 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
     const dispatch = useDispatch();
 
     const onSubmit = (data) => {
-        let featureData = {...data};
-        delete (featureData).originalId;
-        console.log({featureData});
+        console.log({errors});
+        if (!errors) {
 
-        if (isNewFeature) {
-            dispatch(addFeature(account, categoryIndex, featureData));
-        } else if (isFeaturedContent) {
-            dispatch(addFeaturedContent(account, featureData));
-        } else {
-            dispatch(editFeature(account, categoryIndex, featureData, featureIndex));
+            let featureData = {...data};
+            delete (featureData).originalId;
+            console.log({featureData});
+
+            if (isNewFeature) {
+                dispatch(addFeature(account, categoryIndex, featureData));
+            } else if (isFeaturedContent) {
+                dispatch(addFeaturedContent(account, featureData));
+            } else {
+                dispatch(editFeature(account, categoryIndex, featureData, featureIndex));
+            }
+            handleClose();
         }
-        handleClose();
     };
 
     const initForm = () => {
@@ -140,7 +144,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                     <Typography component={'span'}>{ isNewFeature ? 'Create a new feature' : `Edit ${feature?.title}` }</Typography>
                 </DialogTitle>
 
-                    <form action=""
+                    <form
                           noValidate
                           autoComplete="off"
                           onSubmit={handleSubmit(onSubmit)}>
@@ -288,6 +292,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 <FormControlLabel
                                                     value={featureDetails?.isAvailable || false}
                                                     // key={featureDetails.isAvailable}
+                                                    className={classes.input}
                                                     control={<Checkbox color="primary" />}
                                                     label="Is available"
                                                     labelPlacement="start"
