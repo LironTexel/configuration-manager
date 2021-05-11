@@ -3,32 +3,32 @@ import {FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mater
 import {makeStyles} from "@material-ui/core/styles";
 import {INPUT_STYLE_VARIANT} from "../../consts";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     formControl: {
         minWidth: 200,
-        // width: '100%'
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
     },
 }));
 
 
 const SingleSelectField = (props) => {
-    const { defaultValue = null, selectDictionary, onChange, error, isRequired } = props;
+    const { defaultValue = null, selectDictionary, onChange, error, isRequired, label } = props;
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-            <FormControl className={classes.formControl} error={!!error} required={isRequired}>
-                <InputLabel id="single-select-label">Feature type</InputLabel>
+            <FormControl className={classes.formControl}
+                         error={!!error}
+                         variant={INPUT_STYLE_VARIANT}
+                         required={isRequired}>
+                <InputLabel id="single-select-label" htmlFor="single-select-field">Feature type</InputLabel>
                 <Select
-                    labelId="single-select-label"
-                    id="single-select-field"
                     defaultValue={defaultValue}
-                    className={classes.selectEmpty}
-                    variant={INPUT_STYLE_VARIANT}
+                    label={label}
                     onChange={onChange}
+                    inputProps={{
+                        name: label,
+                        id: 'single-select-field',
+                    }}
                 >
                     <MenuItem value="" disabled>Please select type</MenuItem>
                     {

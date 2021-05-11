@@ -115,6 +115,11 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
 
     initForm();
 
+    // useEffect(() => {
+    //     initForm();
+    //     console.log("initialised form", feature)
+    // }, [feature, initForm])
+
     return (
         <>
             <Dialog
@@ -245,6 +250,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     defaultValue={featureDetails?.type}
                                                     selectDictionary={FEATURE_TYPES}
                                                     error={errors['type']?.message}
+                                                    label={"Feature type"}
                                                     onChange={onChange}
                                                     isRequired
                                                 />

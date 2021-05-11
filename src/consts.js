@@ -7,10 +7,11 @@ export const FEATURE_TYPES = {
     LIVE: 'Live',
 };
 // export const INPUT_STYLE_VARIANT = 'filled';
-// export const INPUT_STYLE_VARIANT = 'outlined';
-export const INPUT_STYLE_VARIANT = 'standard';
+export const INPUT_STYLE_VARIANT = 'outlined';
+// export const INPUT_STYLE_VARIANT = 'standard';
 
 export const FEATURE_TAGS = [
+    '13+',
     '2006',
     '2007',
     '2008',
@@ -27,18 +28,18 @@ export const FEATURE_TAGS = [
     '2019',
     '2020',
     '2021',
-    '13+',
-    'Kids',
-    'Edgy',
     'Animation',
     'Cartoon',
-    'Movie',
-    'Future',
-    'Dystopia',
-    'Fantasy',
-    'Horror',
-    'Drama',
-    'Sport',
     'Documentary',
-    'Thriller'
+    'Drama',
+    'Dystopia',
+    'Edgy',
+    'Fantasy',
+    'Future',
+    'Horror',
+    'Kids',
+    'Movie',
+    'Sport',
+    'Short',
+    'Thriller',
 ]

@@ -144,7 +144,7 @@ const FeaturePreview = ({ account, categoryIndex, feature, featureIndex, isFeatu
                           feature={feature}
                           featureIndex={featureIndex}
                           account={account}
-                          isFeaturedContent
+                          isFeaturedContent={isFeaturedContent}
             />
             <AlertDialog title={alertDialogProps.title}
                          content={alertDialogProps.content}

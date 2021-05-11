@@ -65,7 +65,7 @@ const CreateAccount = (props) => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['id']}
+                                            error={!!errors['id']}
                                             className={classes.input}
                                             label="Account ID"
                                             variant="outlined"
@@ -82,7 +82,7 @@ const CreateAccount = (props) => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['name']}
+                                            error={!!errors['name']}
                                             className={classes.input}
                                             label="Account name"
                                             variant="outlined"
