@@ -6,8 +6,7 @@ export const CreateAccountSchema = (accounts) =>
         yup.object().shape({
             name: yup
                 .string()
-                .required('Name is required')
-                .matches(/^[\w.-]+$/, 'Invalid name'),
+                .required('Name is required'),
             id: yup
                 .string()
                 .required('ID is required')

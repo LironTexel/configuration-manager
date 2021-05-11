@@ -383,7 +383,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
-                                                    isImage
                                                     fileName={'Preview'}/>
                                             }
                                         />
@@ -397,7 +396,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
-                                                    isImage
                                                     fileName={'Main'}/>
                                             }
                                         />
@@ -411,8 +409,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
-                                                    isImage
-                                                    fileName={'Watch together'}/>
+                                                    fileName={'Watch_together'}/>
                                             }
                                         />
                                         <Controller
@@ -425,7 +422,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
-                                                    isImage
                                                     fileName={'invitation'}/>
                                             }
                                         />

@@ -14,9 +14,9 @@ function showNotification (dispatch, msg, isSuccess) {
         position: 'tc',
         autoDismiss: 5,
         dismissible: 'click',
-        action: {
-            label: 'OK',
-        },
+        // action: {
+        //     label: 'OK',
+        // },
     };
 
     const type = isSuccess ? 'success' : 'error';

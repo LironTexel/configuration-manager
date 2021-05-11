@@ -108,8 +108,7 @@ const EditAccount = () => {
                             <Grid item xs={3}>
                                 <Paper className={classes.paper}>
                                     <FileField uploadDirectoryPath={`accounts/${id}/logos`}
-                                               isImage
-                                               fileName="logo"
+                                               fileName="Logo"
                                                onChange={onLogoChange}
                                                defaultValue={accounts?.[id]?.logoUrl}/>
                                 </Paper>
