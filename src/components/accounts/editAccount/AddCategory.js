@@ -12,10 +12,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'baseline',
     },
-    addForm: {
-    },
     title: {
         padding: theme.spacing(0, 1)
+    },
+    viewMode: {
+        margin: theme.spacing(2, 0)
+    },
+    expandedMode: {
+        margin: theme.spacing(0.8, 0),
+        display: 'flex',
+        alignItems: 'baseline',
     }
 }));
 
@@ -33,13 +39,16 @@ const AddCategory = ({ account }) => {
 
         if (categoryName && !categoryExists) {
             dispatch(addCategory(account, categoryName));
-            //TODO clear content
-            setHasError(false);
-            setIsExpanded(false);
-            setCategoryName('');
+            clearInput();
         }
         else setHasError(true);
     };
+
+    const clearInput = () => {
+        setHasError(false);
+        setIsExpanded(false);
+        setCategoryName('');
+    }
 
     useEffect(() => {
         setIsExpanded(false);
@@ -51,7 +60,7 @@ const AddCategory = ({ account }) => {
             <CssBaseline />
                 {
                     isExpanded ?
-                        <>
+                        <div className={classes.expandedMode}>
                             <TextField
                                 label="Category name"
                                 variant="outlined"
@@ -59,19 +68,20 @@ const AddCategory = ({ account }) => {
                                 error={hasError}
                                 onChange={e => setCategoryName(e.target.value)}
                                 required
-                                // fullWidth
                             />
                             <Button color="primary"
                                     disabled={!categoryName}
                                     onClick={handleAddCategory}>Add</Button>
                             <Button color="primary"
-                                    onClick={() => setIsExpanded(false)}>Cancel</Button>
-                        </>
+                                    onClick={clearInput}>Cancel</Button>
+                        </div>
                     :
-                        <Button color="primary"
-                                onClick={() => setIsExpanded(true)}>
-                            <Typography className={classes.title}>+ add category</Typography>
-                        </Button>
+                        <div className={classes.viewMode}>
+                            <Button color="primary"
+                                    onClick={() => setIsExpanded(true)}>
+                                <Typography className={classes.title}>+ add category</Typography>
+                            </Button>
+                        </div>
                 }
                 {/*{addError &&*/}
                 {/*    <div className="auth-error">*/}

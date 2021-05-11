@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import {useMemo} from "react";
+import {FEATURE_TYPES} from '../consts'
 
 export const CreateFeatureSchema = (account) =>
     useMemo(() => (
@@ -15,25 +16,27 @@ export const CreateFeatureSchema = (account) =>
                         )
                 }),
             title: yup.string().required('Title is required'),
-            // type: yup.mixed().oneOf(['VOD', 'Other']),
-            description: yup.string(),
+            type: yup.string().required('Feature type is required').oneOf(Object.values(FEATURE_TYPES)),
+            description: yup.string().required('Description is required'),
             url: yup.string().url().required('Feature url is required'),
-            duration: yup.number().positive().integer(),
-            subtitles: yup.string(),
-            isAvailable: yup.boolean(),
+            duration: yup.number().positive().integer().default(1),
+            subtitles: yup.string().required('Subtitles field is required').default(''),
+            isAvailable: yup.boolean().required().default(false),
+            tags: yup.array().of(yup.string()).default([]),
+            // labels: yup.string().required('Labels field is required').default(''),
+            labels: yup.string().default(''),
             metadata: yup.object().shape({
-                cast: yup.string(),
-                director: yup.string(),
-                producer: yup.string(),
+                cast: yup.string().default(''),
+                director: yup.string().default(''),
+                producer: yup.string().default(''),
+                creator: yup.string().default(''),
             }),
             images: yup.object().shape({
-                preview: yup.string().url(),
-                main: yup.string().url(),
-                watch_together: yup.string().url(),
-                invitation: yup.string().url(),
+                preview: yup.string().url().default(''),
+                main: yup.string().url().default(''),
+                watch_together: yup.string().url().default(''),
+                invitation: yup.string().url().default(''),
             }),
-            // tags: yup.array().of(yup.string()),
-            // labels: yup.string(), //TODO?
         })
     ), [account]);
 

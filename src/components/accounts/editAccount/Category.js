@@ -59,7 +59,7 @@ const StyledAccordion = withStyles({
             margin: 'auto',
         },
     },
-    // expanded: {},
+    expanded: {},
 })(Accordion);
 
 const StyledAccordionSummary = withStyles(theme => ({
@@ -97,6 +97,7 @@ const StyledAccordionSummary = withStyles(theme => ({
             margin: '12px 0',
         },
     },
+    expanded: {},
 }))(AccordionSummary);
 
 const StyledAccordionDetails = withStyles(() => ({
@@ -181,7 +182,7 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
                                placeholder="Category name"
                                onChange={e => setName(e.target.value)}
                                onClick={e => e.stopPropagation()}
-                               error={nameErrorMessage}
+                               error={!!nameErrorMessage}
                                required
                                inputProps={{ 'aria-label': 'Category name' }} />
                         </Tooltip>
@@ -199,16 +200,15 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
                 <StyledAccordionDetails>
                     {
                         category?.content?.map((feature, featureIndex) =>
-                            <div className={classes.featurePreview}>
-                                <FeaturePreview key={ feature.id }
-                                                feature={feature}
+                            <div className={classes.featurePreview} key={feature.id}>
+                                <FeaturePreview feature={feature}
                                                 categoryIndex={categoryIndex}
                                                 featureIndex={featureIndex}
                                                 account={account}/></div>
                         )
                     }
                     <div className={classes.featurePreview}>
-                        <FeaturePreview account={account}/>
+                        <FeaturePreview account={account} categoryIndex={categoryIndex}/>
                     </div>
                 </StyledAccordionDetails>
             </StyledAccordion>

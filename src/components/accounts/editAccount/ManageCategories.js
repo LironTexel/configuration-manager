@@ -20,13 +20,14 @@ const useStyles = makeStyles((theme) => ({
             margin: 'auto',
         },
     },
+    expanded: {},
 }));
 
 
 
 const ManageCategories = ({ account }) => {
     const classes = useStyles();
-    const [expanded, setExpanded] = useState('');
+    const [ expanded, setExpanded ] = useState('');
 
     const handleExpanded = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
@@ -37,7 +38,7 @@ const ManageCategories = ({ account }) => {
             <div className={classes.addCategory}><AddCategory account={account}/></div>
             {
                 account?.categories?.map((category, categoryIndex) =>
-                    <div className={classes.categoryContainer}>
+                    <div className={classes.categoryContainer} key={categoryIndex}>
                         <Category account={account}
                                   category={category}
                                   categoryIndex={categoryIndex}

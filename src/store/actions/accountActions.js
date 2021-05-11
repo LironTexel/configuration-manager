@@ -130,3 +130,84 @@ export const deleteFeature = (account, categoryIndex, featureIndex) => {
         })
     }
 }
+
+export const addFeature = (account, categoryIndex, feature) => {
+    return (dispatch, getState, getFirebase ) => {
+
+        let categories = [ ...account.categories ];
+        let category = { ...categories[categoryIndex] };
+        let content = [ ...category.content ];
+
+        content.push(feature);
+
+        category.content = content;
+        categories[categoryIndex] = category;
+
+        const firestore = getFirebase().firestore();
+        firestore.collection('accounts').doc(account.id).update({
+            ...account,
+            categories
+        }).then(() => {
+            dispatch({ type: 'ADD_FEATURE', account })
+            showSuccessNotification(dispatch, `Success adding feature "${feature.title}"`);
+        }).catch((err) => {
+            dispatch({ type: 'ADD_FEATURE_ERROR', err })
+            showErrorNotification(dispatch, `Error adding feature "${feature.title}"`);
+            console.log('Error adding feature', err);
+        })
+    }
+}
+
+export const addFeaturedContent = (account, feature) => {
+    return (dispatch, getState, getFirebase ) => {
+
+        // let categories =  [ ...account.categories ];
+        // let category =  { ...categories[categoryIndex] };
+        // let content =  [ ...category.content ];
+        //
+        // content.splice(featureIndex, 1, feature);
+        //
+        // category.content = content;
+        // categories[categoryIndex] = category;
+
+        const firestore = getFirebase().firestore();
+        firestore.collection('accounts').doc(account.id).update({
+            ...account,
+            featuredContent: feature
+        }).then(() => {
+            dispatch({ type: 'EDIT_FEATURED_CONTENT', account })
+            showSuccessNotification(dispatch, `Success editing featured content "${feature.title}"`);
+        }).catch((err) => {
+            dispatch({ type: 'EDIT_FEATURED_CONTENT_ERROR', err })
+            showErrorNotification(dispatch, `Error editing featured content "${feature.title}"`);
+            console.log('Error editing featured content', err);
+        })
+    }
+}
+
+export const editFeature = (account, categoryIndex, feature, featureIndex) => {
+    return (dispatch, getState, getFirebase ) => {
+
+        let categories =  [ ...account.categories ];
+        let category =  { ...categories[categoryIndex] };
+        let content =  [ ...category.content ];
+
+        content.splice(featureIndex, 1, feature);
+
+        category.content = content;
+        categories[categoryIndex] = category;
+
+        const firestore = getFirebase().firestore();
+        firestore.collection('accounts').doc(account.id).update({
+            ...account,
+            categories
+        }).then(() => {
+            dispatch({ type: 'EDIT_FEATURE', account })
+            showSuccessNotification(dispatch, `Success editing feature "${feature.title}"`);
+        }).catch((err) => {
+            dispatch({ type: 'EDIT_FEATURE_ERROR', err })
+            showErrorNotification(dispatch, `Error editing feature "${feature.title}"`);
+            console.log('Error editing feature', err);
+        })
+    }
+}

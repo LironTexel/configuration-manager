@@ -1,7 +1,5 @@
 import React, { useState} from 'react';
-import {Box, Button, CssBaseline,
-    // Typography
-} from '@material-ui/core';
+import {Box, Button, CssBaseline} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import MovieCreationTwoToneIcon from '@material-ui/icons/MovieCreationTwoTone';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
@@ -81,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const FeaturePreview = ({ account, categoryIndex, feature, featureIndex }) => {
+const FeaturePreview = ({ account, categoryIndex, feature, featureIndex, isFeaturedContent }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [alertDialogProps, setAlertDialogProps] = useState({});
@@ -128,7 +126,7 @@ const FeaturePreview = ({ account, categoryIndex, feature, featureIndex }) => {
                         }
                     </div>
                     {
-                        feature &&
+                        feature && !isFeaturedContent &&
                         <DeleteIcon className="delete-feature-icon" onClick={handleFeatureDelete}/>
                     }
                     <Box component="div"
@@ -140,7 +138,14 @@ const FeaturePreview = ({ account, categoryIndex, feature, featureIndex }) => {
                     </Box>
                 </div>
             </Button>
-            <FeatureModal open={open} handleClose={handleClose} feature={feature} account={account}/>
+            <FeatureModal open={open}
+                          handleClose={handleClose}
+                          categoryIndex={categoryIndex}
+                          feature={feature}
+                          featureIndex={featureIndex}
+                          account={account}
+                          isFeaturedContent
+            />
             <AlertDialog title={alertDialogProps.title}
                          content={alertDialogProps.content}
                          isOpen={alertDialogProps.isOpen}

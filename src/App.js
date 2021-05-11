@@ -20,6 +20,7 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <header className="App-header">
+            <Notifications notifications={notifications} style={notificationsStyle} />
             <Layout>
                 <Switch>
                     <Route exact path='/' component={ Dashboard }/>
@@ -28,7 +29,6 @@ function App() {
                     <Route path='/signup' component={ SignUp }/>
                     <Route path='/create' component={ CreateAccount }/>
                 </Switch>
-                <Notifications notifications={notifications} style={notificationsStyle} />
             </Layout>
           </header>
         </div>

@@ -10,21 +10,33 @@ import {
     Typography,
     makeStyles,
     Checkbox,
-    FormControlLabel,
+    FormControlLabel, Divider,
 } from '@material-ui/core';
-// import {FEATURE_TYPES} from "../../../consts";
-import {FEATURE_TAGS} from "../../../consts";
+import {FEATURE_TAGS, FEATURE_TYPES, INPUT_STYLE_VARIANT} from "../../../consts";
 import FileField from "../../shared/FileField";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateFeatureSchema} from "../../../models/feature.model";
 import TagsField from "../../shared/TagsField";
+import {useDispatch} from "react-redux";
+import SingleSelectField from "../../shared/SingleSelectField";
+import {addFeature, addFeaturedContent, editFeature} from "../../../store/actions/accountActions";
+import clsx from "clsx";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     dialog: {
         '& .MuiDialog-paper': {
             maxWidth: '750px',
         }
+    },
+    sectionTitle: {
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginBottom: theme.spacing(3),
+        // fontSize: '1.5em',
+    },
+    divider: {
+        margin: theme.spacing(3),
     },
     dialogContent: {
         display: 'flex',
@@ -42,41 +54,62 @@ const useStyles = makeStyles(() => ({
         flexBasis: 1,
         width: '20%',
     },
-    featureType: {
-        minWidth: '40%'
+    input: {
+        marginBottom: theme.spacing(1.5)
     },
+    multipleInputs: {
+        display: 'flex',
+        justifyContent: 'space-around',
+    }
 }));
 
-const FeatureModal = ({ open , handleClose, feature, account }) => {
+const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex, account, isFeaturedContent }) => {
     const classes = useStyles();
     const isNewFeature = !feature;
     const featureDetails = { ...feature };
     const { handleSubmit, formState: { errors }, control, setValue } = useForm({
         resolver: yupResolver(CreateFeatureSchema(account))
     });
+    const dispatch = useDispatch();
 
     const onSubmit = (data) => {
-        console.log({data});
-        // dispatch(({  }));
+        let featureData = {...data};
+        delete (featureData).originalId;
+        console.log({featureData});
+
+        if (isNewFeature) {
+            dispatch(addFeature(account, categoryIndex, featureData));
+        } else if (isFeaturedContent) {
+            dispatch(addFeaturedContent(account, featureData));
+        } else {
+            dispatch(editFeature(account, categoryIndex, featureData, featureIndex));
+        }
+        handleClose();
     };
 
-    setValue( 'originalId', feature?.id); // for verification
-    setValue( 'id', feature?.id);
-    setValue( 'title', feature?.title || '');
-    setValue( 'description', feature?.description || '');
-    setValue( 'url', feature?.url || '');
-    setValue( 'duration', feature?.duration || '');
-    setValue( 'subtitles', feature?.subtitles || '');
-    setValue( 'isAvailable', feature?.isAvailable || '');
-    setValue( 'labels', feature?.labels || '');
-    setValue( 'metadata.cast', feature?.metadata?.cast || '');
-    setValue( 'metadata.director', feature?.metadata?.director || '');
-    setValue( 'metadata.producer', feature?.metadata?.producer || '');
-    setValue( 'images.preview', feature?.images?.preview || '');
-    setValue( 'images.main', feature?.images?.main || '');
-    setValue( 'images.watch_together', feature?.images?.watch_together || '');
-    setValue( 'images.invitation', feature?.images?.invitation || '');
-    setValue( 'tags', feature?.tags || '');
+    const initForm = () => {
+        setValue( 'id', feature?.id);
+        setValue( 'originalId', feature?.id); // for verification
+        setValue( 'title', feature?.title || '');
+        setValue( 'description', feature?.description || '');
+        setValue( 'url', feature?.url || '');
+        setValue( 'duration', feature?.duration || '');
+        setValue( 'subtitles', feature?.subtitles || '');
+        setValue( 'isAvailable', feature?.isAvailable || false);
+        setValue( 'labels', feature?.labels || '');
+        setValue( 'metadata.cast', feature?.metadata?.cast || '');
+        setValue( 'metadata.director', feature?.metadata?.director || '');
+        setValue( 'metadata.producer', feature?.metadata?.producer || '');
+        setValue( 'metadata.creator', feature?.metadata?.creator || '');
+        setValue( 'images.preview', feature?.images?.preview || '');
+        setValue( 'images.main', feature?.images?.main || '');
+        setValue( 'images.watch_together', feature?.images?.watch_together || '');
+        setValue( 'images.invitation', feature?.images?.invitation || '');
+        setValue( 'tags', feature?.tags || []);
+        setValue( 'type', feature?.type || '');
+    }
+
+    initForm();
 
     return (
         <>
@@ -98,7 +131,9 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                           onSubmit={handleSubmit(onSubmit)}>
 
                         <DialogContent dividers className={classes.dialogContent}>
-                            <DialogContentText>General info</DialogContentText>
+                            <DialogContentText className={classes.sectionTitle}>
+                                <Typography>General Info</Typography>
+                            </DialogContentText>
                             <div className={classes.formBody}>
                                 <Controller
                                     name='id'
@@ -108,11 +143,13 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['id']}
                                             className={classes.input}
                                             label="Feature ID"
-                                            key={featureDetails.id}
+                                            variant={INPUT_STYLE_VARIANT}
+                                            // key={featureDetails.id}
                                             defaultValue={featureDetails?.id || ''}
                                             helperText={errors.id?.message}
                                             onChange={onChange}
                                             type="number"
+                                            disabled={!isNewFeature}
                                             fullWidth
                                             required
                                         />
@@ -126,7 +163,8 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['title']}
                                             className={classes.input}
                                             label="Feature title"
-                                            key={featureDetails.title}
+                                            variant={INPUT_STYLE_VARIANT}
+                                            // key={featureDetails.title}
                                             defaultValue={featureDetails?.title || ''}
                                             helperText={errors.title?.message}
                                             onChange={onChange}
@@ -144,11 +182,13 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['description']}
                                             className={classes.input}
                                             label="Description"
-                                            key={featureDetails.description}
+                                            variant={INPUT_STYLE_VARIANT}
+                                            // key={featureDetails.description}
                                             defaultValue={featureDetails?.description || ''}
                                             helperText={errors.description?.message}
                                             onChange={onChange}
                                             fullWidth
+                                            required
                                         />
                                     }
                                 />
@@ -161,28 +201,10 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['url']}
                                             className={classes.input}
                                             label="Url"
-                                            key={featureDetails.url}
+                                            variant={INPUT_STYLE_VARIANT}
+                                            // key={featureDetails.url}
                                             defaultValue={featureDetails?.url || ''}
                                             helperText={errors.url?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
-
-                                <Controller
-                                    name='duration'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['duration']}
-                                            className={classes.input}
-                                            label="Duration"
-                                            key={featureDetails.duration}
-                                            defaultValue={featureDetails?.duration || ''}
-                                            type="number"
-                                            helperText={errors.duration?.message}
                                             onChange={onChange}
                                             fullWidth
                                             required
@@ -198,7 +220,8 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             error={errors['subtitles']}
                                             className={classes.input}
                                             label="Subtitles"
-                                            key={featureDetails.subtitles}
+                                            variant={INPUT_STYLE_VARIANT}
+                                            // key={featureDetails.subtitles}
                                             defaultValue={featureDetails?.subtitles || ''}
                                             helperText={errors.subtitles?.message}
                                             onChange={onChange}
@@ -208,70 +231,61 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                     }
                                 />
 
-                                <Controller
-                                    name='labels'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <TextField
-                                            error={errors['labels']}
-                                            className={classes.input}
-                                            label="Labels"
-                                            key={featureDetails.labels}
-                                            defaultValue={featureDetails?.labels || ''}
-                                            helperText={errors.labels?.message}
-                                            onChange={onChange}
-                                            fullWidth
-                                            required
-                                        />
-                                    }
-                                />
+                                <div className={clsx(classes.input, classes.multipleInputs)}>
+                                    <Controller
+                                        name='type'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <SingleSelectField
+                                                defaultValue={featureDetails?.type}
+                                                selectDictionary={FEATURE_TYPES}
+                                                error={errors['type']?.message}
+                                                onChange={onChange}
+                                                isRequired
+                                            />
+                                        }
+                                    />
+                                    <Controller
+                                        name='duration'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <TextField
+                                                error={errors['duration']}
+                                                className={classes.input}
+                                                label="Duration"
+                                                variant={INPUT_STYLE_VARIANT}
+                                                // key={featureDetails.duration}
+                                                defaultValue={featureDetails?.duration || ''}
+                                                type="number"
+                                                helperText={errors.duration?.message}
+                                                onChange={onChange}
+                                                // fullWidth
+                                                required
+                                            />
+                                        }
+                                    />
+                                    <Controller
+                                        name='isAvailable'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <FormControlLabel
+                                                value={featureDetails?.isAvailable || false}
+                                                // key={featureDetails.isAvailable}
+                                                control={<Checkbox color="primary" />}
+                                                label="Is available"
+                                                labelPlacement="start"
+                                                onChange={onChange}
+                                                required
+                                            />
+                                        }
+                                    />
+                                </div>
 
-                                <Controller
-                                    name='isAvailable'
-                                    control={control}
-                                    render={({ field: {onChange} }) =>
-                                        <FormControlLabel
-                                            value={featureDetails?.isAvailable}
-                                            className={classes.input}
-                                            key={featureDetails.isAvailable}
-                                            control={<Checkbox color="primary" />}
-                                            label="Is available"
-                                            labelPlacement="start"
-                                            onChange={onChange}
-                                            required
-                                        />
-                                        // <TextField
-                                        //     error={errors['isAvailable']}
-                                        //     className={classes.input}
-                                        //     label="Is available"
-                                        //     defaultValue={featureDetails?.isAvailable || ''}
-                                        //     helperText={errors.isAvailable?.message}
-                                        //     onChange={onChange}
-                                        //     fullWidth
-                                        //     required
-                                        // />
-                                    }
-                                />
 
-                                {/*<FormControl className={classes.featureType}*/}
-                                {/*             required>*/}
-                                {/*    <InputLabel id="demo-simple-select-label">Feature type</InputLabel>*/}
-                                {/*    <Select*/}
-                                {/*        labelId="demo-simple-select-label"*/}
-                                {/*        id="demo-simple-select-outlined"*/}
-                                {/*        value={featureDetails?.type || ''}*/}
-                                {/*        // onChange={(e) => handleChange('type', e.target.value)}*/}
-                                {/*        label="Feature type"*/}
-                                {/*    >*/}
-                                {/*        <MenuItem value="">*/}
-                                {/*            <em>None</em>*/}
-                                {/*        </MenuItem>*/}
-                                {/*        <MenuItem value={FEATURE_TYPES.VOD}>{FEATURE_TYPES.VOD}</MenuItem>*/}
-                                {/*        <MenuItem value={FEATURE_TYPES.OTHER}>{FEATURE_TYPES.OTHER}</MenuItem>*/}
-                                {/*    </Select>*/}
-                                {/*</FormControl>*/}
-
-                                <DialogContentText>Metadata</DialogContentText>
+                                <Divider className={classes.divider} variant="middle" />
+                                <DialogContentText className={classes.sectionTitle}>
+                                    <Typography>Metadata</Typography>
+                                </DialogContentText>
                                 <Controller
                                     name='metadata.cast'
                                     control={control}
@@ -279,9 +293,10 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                         <TextField
                                             error={errors['metadata.cast']}
                                             className={classes.input}
-                                            key={featureDetails.metadata?.cast}
+                                            // key={featureDetails.metadata?.cast}
                                             defaultValue={featureDetails?.metadata?.cast || ''}
                                             label="Cast"
+                                            variant={INPUT_STYLE_VARIANT}
                                             helperText={errors.metadata?.cast?.message}
                                             onChange={onChange}
                                             fullWidth
@@ -297,6 +312,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             className={classes.input}
                                             defaultValue={featureDetails?.metadata?.director || ''}
                                             label="Director"
+                                            variant={INPUT_STYLE_VARIANT}
                                             helperText={errors.metadata?.director?.message}
                                             onChange={onChange}
                                             fullWidth
@@ -313,6 +329,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                             className={classes.input}
                                             defaultValue={featureDetails?.metadata?.producer || ''}
                                             label="Producer"
+                                            variant={INPUT_STYLE_VARIANT}
                                             helperText={errors.metadata?.producer?.message}
                                             onChange={onChange}
                                             fullWidth
@@ -320,7 +337,27 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                     }
                                 />
 
-                                <DialogContentText>Images</DialogContentText>
+                                <Controller
+                                    name='metadata.creator'
+                                    control={control}
+                                    render={({ field: {onChange} }) =>
+                                        <TextField
+                                            error={errors['metadata.creator']}
+                                            className={classes.input}
+                                            defaultValue={featureDetails?.metadata?.creator || ''}
+                                            label="Creator"
+                                            variant={INPUT_STYLE_VARIANT}
+                                            helperText={errors.metadata?.creator?.message}
+                                            onChange={onChange}
+                                            fullWidth
+                                        />
+                                    }
+                                />
+
+                                <Divider className={classes.divider} variant="middle" />
+                                <DialogContentText className={classes.sectionTitle}>
+                                    <Typography>Images</Typography>
+                                </DialogContentText>
                                 <div className={classes.imagesSection}>
                                     <Controller
                                         name='images.preview'
@@ -370,7 +407,7 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                         render={({ field: {onChange} }) =>
                                             <FileField
                                                 defaultValue={featureDetails?.images?.invitation}
-                                                error={errors['images.invitation']}
+                                                error={errors['images.invitation']?.message}
                                                 className={classes.image}
                                                 uploadDirectoryPath={`accounts/${account.id}/images`}
                                                 onChange={onChange}
@@ -380,16 +417,42 @@ const FeatureModal = ({ open , handleClose, feature, account }) => {
                                     />
                                 </div>
 
-                                <DialogContentText>Tags</DialogContentText>
+                                <Divider className={classes.divider} variant="middle" />
+                                <DialogContentText className={classes.sectionTitle}>
+                                    <Typography>Tags and labels</Typography>
+                                </DialogContentText>
+
+                                <div className={classes.input}>
+                                    <Controller
+                                        name='tags'
+                                        control={control}
+                                        render={({ field: {onChange} }) =>
+                                            <TagsField
+                                                defaultValue={featureDetails?.tags || []}
+                                                tagsDictionary={FEATURE_TAGS}
+                                                error={errors['tags']?.message}
+                                                onChange={onChange}
+                                                styleVariant={'outlined'}
+                                            />
+                                        }
+                                    />
+                                </div>
+
                                 <Controller
-                                    name='tags'
+                                    name='labels'
                                     control={control}
                                     render={({ field: {onChange} }) =>
-                                        <TagsField
-                                            defaultValue={featureDetails?.tags}
-                                            tagsDictionary={FEATURE_TAGS}
-                                            error={errors['tags']}
+                                        <TextField
+                                            error={errors['labels']?.message}
+                                            className={classes.input}
+                                            label="Labels"
+                                            variant={INPUT_STYLE_VARIANT}
+                                            // key={featureDetails.labels}
+                                            defaultValue={featureDetails?.labels || ''}
+                                            helperText={errors.labels?.message}
                                             onChange={onChange}
+                                            fullWidth
+                                            // required
                                         />
                                     }
                                 />

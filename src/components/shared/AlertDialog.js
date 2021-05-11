@@ -14,7 +14,7 @@ const AlertDialog = (props) => {
     return (
         <div className={classes.root}>
             <Dialog
-                open={isOpen}
+                open={!!isOpen}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"

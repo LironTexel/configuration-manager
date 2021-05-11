@@ -98,7 +98,9 @@ const EditAccount = () => {
                                     </form>
                                     <div className={classes.featuredContentContainer}>
                                         <Typography>Featured content</Typography>
-                                        <FeaturePreview feature={account?.featuredContent} account={account}/>
+                                        <FeaturePreview feature={account?.featuredContent}
+                                                        account={account}
+                                                        isFeaturedContent/>
                                     </div>
                                     <ManageCategories account={account}/>
                                 </Paper>

@@ -1,32 +1,15 @@
 import React from "react";
-import { Chip, FormControl, Input, InputLabel, MenuItem, Select } from "@material-ui/core";
+import {Checkbox, FormControl, TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(() => ({
-    root: {
-    },
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: 2,
-    },
-    featureTags: {
-        minWidth: '40%'
-    }
+    root: {},
 }));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
 
 const TagsField = (props) => {
     const { defaultValue, tagsDictionary, onChange } = props;
@@ -34,31 +17,33 @@ const TagsField = (props) => {
 
     return (
         <div className={classes.root}>
-            <FormControl className={classes.featureTags}>
-                <InputLabel id="demo-mutiple-chip-label">Tags</InputLabel>
-                <Select
-                    labelId="demo-mutiple-chip-label"
-                    id="demo-mutiple-chip"
+            <FormControl fullWidth>
+                <Autocomplete
                     multiple
+                    id="tags-outlined"
+                    options={tagsDictionary}
+                    getOptionSelected ={(option, value) => {
+                        return option === value
+                    }}
+                    getOptionLabel={(option) => option}
                     defaultValue={defaultValue || []}
-                    onChange={onChange}
-                    input={<Input id="select-multiple-chip" />}
-                    renderValue={(selected) => (
-                        <div className={classes.chips}>
-                            {selected.map((value) => (
-                                <Chip key={value} label={value} className={classes.chip} />
-                            ))}
-                        </div>
+                    disableCloseOnSelect
+                    onChange={(event, values) => onChange(values)}
+                    renderOption={(option, { selected }) => (
+                        <>
+                            <Checkbox
+                                icon={icon}
+                                checkedIcon={checkedIcon}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                            />
+                            {option}
+                        </>
                     )}
-                    MenuProps={MenuProps}
-                >
-                    {
-                        Object.values(tagsDictionary || []).map(value => (
-                            <MenuItem key={value} value={value}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                </Select>
+                    renderInput={(params) => (
+                        <TextField {...params} variant="outlined" label="Feature tags" />
+                    )}
+                />
             </FormControl>
         </div>
     )

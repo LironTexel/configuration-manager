@@ -106,7 +106,7 @@ const AccountsDrawer = () => {
             >
                 <div className={classes.drawerHeader}>
                     <IconButton onClick={toggleDrawer} className={classes.chevron}>
-                        <ChevronLeftIcon fontSize="medium"/>
+                        <ChevronLeftIcon fontSize="large"/>
                     </IconButton>
                 </div>
                 <Divider className={classes.toolbarDivider}/>
@@ -128,8 +128,7 @@ const AccountsDrawer = () => {
                                 <ListItemText textoverflow="ellipsis"
                                               primary={<Box textOverflow="ellipsis" overflow="hidden">{account.name}</Box>}
                                               secondary={
-                                                  <Box component="div"
-                                                       className={classes.accountItemTextSecondary}
+                                                  <Box className={classes.accountItemTextSecondary}
                                                        textOverflow="ellipsis"
                                                        overflow="hidden">
                                                   ID: {account.id}
