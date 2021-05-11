@@ -10,7 +10,7 @@ import {
     Typography,
     makeStyles,
     Checkbox,
-    FormControlLabel, Divider,
+    FormControlLabel, Divider, FormControl,
 } from '@material-ui/core';
 import {FEATURE_TAGS, FEATURE_TYPES, INPUT_STYLE_VARIANT} from "../../../consts";
 import FileField from "../../shared/FileField";
@@ -83,9 +83,8 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
     const dispatch = useDispatch();
 
     const onSubmit = (data) => {
-        console.log({errors});
-        if (!errors) {
-
+        // console.log({errors});
+        // if (!Object.entries(errors).length) {
             let featureData = {...data};
             delete (featureData).originalId;
             console.log({featureData});
@@ -98,7 +97,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                 dispatch(editFeature(account, categoryIndex, featureData, featureIndex));
             }
             handleClose();
-        }
+        // }
     };
 
     const initForm = () => {
@@ -289,17 +288,15 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                             name='isAvailable'
                                             control={control}
                                             render={({ field: {onChange} }) =>
-                                                <FormControlLabel
-                                                    value={featureDetails?.isAvailable || false}
-                                                    // key={featureDetails.isAvailable}
-                                                    className={classes.input}
-                                                    control={<Checkbox color="primary" />}
-                                                    label="Is available"
-                                                    labelPlacement="start"
-                                                    onChange={onChange}
-                                                    required
-                                                />
-                                            }
+                                                <FormControl component='fieldset'>
+                                                    <FormControlLabel
+                                                    name='isAvailable'
+                                                    label='Is available'
+                                                    control={<Checkbox
+                                                               defaultChecked={featureDetails?.isAvailable}
+                                                               onChange={(e) => onChange(e.target.checked)}/>}
+                                                    />
+                                                </FormControl>}
                                         />
                                     </div>
                                 </div>
