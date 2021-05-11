@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         border: `1px solid ${Colors.MID_GREY}`,
         borderRadius: '10px',
-        padding: theme.spacing(1),
+        padding: theme.spacing(1, 1, 3),
+
         '&::before': {
             content: '"Image preview"',
             display: 'block',
@@ -27,16 +28,17 @@ const useStyles = makeStyles((theme) => ({
             background: 'white',
             width: 'fit-content',
             padding: '5px'
-            // width: '150px'
         },
         '& > img' : {
             maxWidth: '100%',
             maxHeight: '100%',
+            margin: '0 auto',
+            display: 'block'
         },
         '& .MuiSvgIcon-root': {
             height: '100%',
             width: '100%',
-            color: Colors.GREY
+            color: Colors.GREY,
         },
     },
     uploadButton: {

@@ -52,11 +52,17 @@ const useStyles = makeStyles((theme) => ({
     imagesSection: {
         display: 'flex',
         flexDirection: 'row',
+        flexWrap: 'wrap',
+        '& > div': {
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            width: '200px',
+            height: '200px',
+            margin: theme.spacing(0, 4, 8)
+        }
     },
     image: {
-        flexGrow: 1,
-        flexBasis: 1,
-        width: '20%',
     },
     input: {
         marginBottom: theme.spacing(1.5)
@@ -376,11 +382,12 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         <Controller
                                             name='images.preview'
                                             control={control}
+                                            className={classes.image}
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.preview}
                                                     error={errors['images.preview']}
-                                                    className={classes.image}
+                                                    // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
                                                     fileName={'Preview'}/>
@@ -389,11 +396,12 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         <Controller
                                             name='images.main'
                                             control={control}
+                                            className={classes.image}
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.main}
                                                     error={errors['images.main']}
-                                                    className={classes.image}
+                                                    // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
                                                     fileName={'Main'}/>
@@ -402,11 +410,12 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         <Controller
                                             name='images.watch_together'
                                             control={control}
+                                            className={classes.image}
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.main}
                                                     error={errors['images.watch_together']}
-                                                    className={classes.image}
+                                                    // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
                                                     fileName={'Watch_together'}/>
@@ -415,11 +424,12 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         <Controller
                                             name='images.invitation'
                                             control={control}
+                                            className={classes.image}
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.invitation}
                                                     error={errors['images.invitation']?.message}
-                                                    className={classes.image}
+                                                    // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
                                                     fileName={'invitation'}/>
