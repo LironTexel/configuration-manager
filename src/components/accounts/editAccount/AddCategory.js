@@ -56,7 +56,8 @@ const AddCategory = ({ account }) => {
     }, [account.id])
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root}
+             onKeyDown={e => e.key === 'Enter' && handleAddCategory()}>
             <CssBaseline />
                 {
                     isExpanded ?

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useParams } from "react-router-dom";
-import moment from "moment";
+// import moment from "moment";
 import {Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import {editAccount} from "../../store/actions/accountActions";
@@ -65,7 +65,7 @@ const EditAccount = () => {
                 <div className={clsx(classes.root, "grid-container")}>
                     <div className={classes.header}>
                         <Typography variant={"h6"}>Account {account.name}</Typography>
-                        <Typography color={"textSecondary"}>Created { moment(account.createdAt).calendar() }</Typography>
+                        {/*<Typography color={"textSecondary"}>Updated { moment(account.createdAt).calendar() }</Typography>*/}
                     </div>
 
                         <Grid container spacing={3}>
@@ -78,7 +78,7 @@ const EditAccount = () => {
                                         <Controller
                                             render={({ field: {onChange} }) =>
                                                 <TextField
-                                                    error={errors['name']}
+                                                    error={!!errors['name']}
                                                     label="Name"
                                                     variant="outlined"
                                                     key={account.name}

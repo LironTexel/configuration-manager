@@ -85,15 +85,17 @@ const Navbar = () => {
             >
                 <Toolbar className={classes.toolbar}>
                     <div>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            edge="start"
-                            className={clsx(classes.menuButton, isOpen && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                        { auth.uid &&
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={toggleDrawer}
+                                edge="start"
+                                className={clsx(classes.menuButton, isOpen && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        }
                         <Link to='/' className={classes.appTitle}>
                             <Typography variant="h5" noWrap>
                                 Configuration manager

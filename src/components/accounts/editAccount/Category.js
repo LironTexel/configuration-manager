@@ -118,22 +118,20 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
     const toggleEdit = (e, isEdit) => {
         e.stopPropagation();
         setIsEditMode(isEdit);
-        console.log('edit',isEdit )
     }
 
     const handleRename = e => {
         e.stopPropagation();
-        const nameExists = category.name !== name && account?.categories?.find(category => {
-            return category.name.toLowerCase() === name.toLowerCase();
-        })
+        const nameChanged = category.name !== name;
+        const nameExists = account?.categories?.find(category => category.name.toLowerCase() === name.toLowerCase());
 
         if (!name) {
             setNameErrorMessage('Name is required');
         }
-        else if (nameExists) {
+        else if (nameChanged && nameExists) {
             setNameErrorMessage('Name already exists');
         }
-        else {
+        else if (nameChanged) {
             dispatch(editCategoryName(account, categoryIndex, name));
             setNameErrorMessage('');
             setIsEditMode(false);
@@ -169,7 +167,7 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
     }, [category.name])
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} onKeyDown={e => e.key === 'Enter' && handleRename(e)}>
             <StyledAccordion key={ category.name }
                              expanded={expanded === category.name}
                              onChange={handleExpanded(category.name)}>
@@ -179,12 +177,12 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
                     <div className={clsx(classes.editMode, !isEditMode && classes.hide)}>
                         <Tooltip title={nameErrorMessage} placement="bottom" arrow>
                             <Input value={name}
-                               placeholder="Category name"
-                               onChange={e => setName(e.target.value)}
-                               onClick={e => e.stopPropagation()}
-                               error={!!nameErrorMessage}
-                               required
-                               inputProps={{ 'aria-label': 'Category name' }} />
+                                   placeholder="Category name"
+                                   onChange={e => setName(e.target.value)}
+                                   onClick={e => e.stopPropagation()}
+                                   error={!!nameErrorMessage}
+                                   required
+                                   inputProps={{ 'aria-label': 'Category name' }} />
                         </Tooltip>
                         <DoneIcon className='category-edit-action'
                                   onClick={handleRename}/>
@@ -192,7 +190,7 @@ const Category = ({ account, category, categoryIndex, expanded, handleExpanded }
                                    onClick={handleCancelEdit}/>
                     </div>
                     <div className={clsx(classes.displayMode, isEditMode && classes.hide)}>
-                        <Typography>{category.name}</Typography>
+                        <Typography onClick={e => toggleEdit(e,true)}>{category.name}</Typography>
                         <div className='category-action' onClick={e => toggleEdit(e,true)}><EditIcon/></div>
                         <div className='category-action' onClick={handleDelete}><DeleteIcon/></div>
                     </div>

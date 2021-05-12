@@ -41,9 +41,9 @@ const SignUp = () => {
         resolver: yupResolver(CreateUserSchema())
     });
 
-    const onSubmit = (data) => {
-        const { email, password, username } = data;
-        console.log({data});
+    const onSubmit = (signupData) => {
+        const { email, password, username } = signupData;
+        console.log({signupData});
         dispatch(signUpUser({ email, password, username }));
     };
 
@@ -65,7 +65,7 @@ const SignUp = () => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['username']}
+                                            error={!!errors['username']}
                                             className={classes.input}
                                             label="Username"
                                             variant="outlined"
@@ -82,7 +82,7 @@ const SignUp = () => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['email']}
+                                            error={!!errors['email']}
                                             className={classes.input}
                                             label="Email"
                                             variant="outlined"
@@ -99,7 +99,7 @@ const SignUp = () => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['password']}
+                                            error={!!errors['password']}
                                             className={classes.input}
                                             label="Password"
                                             variant="outlined"

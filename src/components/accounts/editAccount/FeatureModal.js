@@ -159,7 +159,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['id']}
+                                                error={!!errors['id']}
                                                 className={classes.input}
                                                 label="Feature ID"
                                                 variant={INPUT_STYLE_VARIANT}
@@ -179,7 +179,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['title']}
+                                                error={!!errors['title']}
                                                 className={classes.input}
                                                 label="Feature title"
                                                 variant={INPUT_STYLE_VARIANT}
@@ -198,7 +198,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['description']}
+                                                error={!!errors['description']}
                                                 className={classes.input}
                                                 label="Description"
                                                 variant={INPUT_STYLE_VARIANT}
@@ -217,7 +217,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['url']}
+                                                error={!!errors['url']}
                                                 className={classes.input}
                                                 label="Url"
                                                 variant={INPUT_STYLE_VARIANT}
@@ -236,7 +236,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['subtitles']}
+                                                error={!!errors['subtitles']}
                                                 className={classes.input}
                                                 label="Subtitles"
                                                 variant={INPUT_STYLE_VARIANT}
@@ -270,7 +270,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                             control={control}
                                             render={({ field: {onChange} }) =>
                                                 <TextField
-                                                    error={errors['duration']}
+                                                    error={!!errors['duration']}
                                                     className={classes.input}
                                                     label="Duration"
                                                     variant={INPUT_STYLE_VARIANT}
@@ -311,7 +311,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['metadata.cast']}
+                                                error={!!errors['metadata.cast']}
                                                 className={classes.input}
                                                 // key={featureDetails.metadata?.cast}
                                                 defaultValue={featureDetails?.metadata?.cast || ''}
@@ -328,7 +328,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['metadata.director']}
+                                                error={!!errors['metadata.director']}
                                                 className={classes.input}
                                                 defaultValue={featureDetails?.metadata?.director || ''}
                                                 label="Director"
@@ -345,7 +345,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['metadata.producer']}
+                                                error={!!errors['metadata.producer']}
                                                 className={classes.input}
                                                 defaultValue={featureDetails?.metadata?.producer || ''}
                                                 label="Producer"
@@ -362,7 +362,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['metadata.creator']}
+                                                error={!!errors['metadata.creator']}
                                                 className={classes.input}
                                                 defaultValue={featureDetails?.metadata?.creator || ''}
                                                 label="Creator"
@@ -388,7 +388,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.preview}
-                                                    error={errors['images.preview']}
+                                                    error={errors['images.preview']?.message}
                                                     // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
@@ -402,7 +402,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.main}
-                                                    error={errors['images.main']}
+                                                    error={errors['images.main']?.message}
                                                     // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
@@ -416,7 +416,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                             render={({ field: {onChange} }) =>
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.main}
-                                                    error={errors['images.watch_together']}
+                                                    error={errors['images.watch_together']?.message}
                                                     // className={classes.image}
                                                     uploadDirectoryPath={`accounts/${account.id}/images`}
                                                     onChange={onChange}
@@ -467,7 +467,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                         control={control}
                                         render={({ field: {onChange} }) =>
                                             <TextField
-                                                error={errors['labels']?.message}
+                                                error={!!errors['labels']?.message}
                                                 className={classes.input}
                                                 label="Labels"
                                                 variant={INPUT_STYLE_VARIANT}

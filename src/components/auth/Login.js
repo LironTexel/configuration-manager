@@ -64,7 +64,7 @@ const Login = () => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['email']}
+                                            error={!!errors['email']}
                                             className={classes.input}
                                             label="Email"
                                             variant="outlined"
@@ -81,7 +81,7 @@ const Login = () => {
                                     control={control}
                                     render={({ field: {onChange} }) =>
                                         <TextField
-                                            error={errors['password']}
+                                            error={!!errors['password']}
                                             className={classes.input}
                                             label="Password"
                                             variant="outlined"

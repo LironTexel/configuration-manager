@@ -22,7 +22,7 @@ const SingleSelectField = (props) => {
                          required={isRequired}>
                 <InputLabel id="single-select-label" htmlFor="single-select-field">Feature type</InputLabel>
                 <Select
-                    defaultValue={defaultValue}
+                    defaultValue={defaultValue || ''}
                     label={label}
                     onChange={onChange}
                     inputProps={{
