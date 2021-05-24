@@ -390,7 +390,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     defaultValue={featureDetails?.images?.preview}
                                                     error={errors['images.preview']?.message}
                                                     // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
                                                     onChange={onChange}
                                                     fileName={'Preview'}/>
                                             }
@@ -404,7 +404,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     defaultValue={featureDetails?.images?.main}
                                                     error={errors['images.main']?.message}
                                                     // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
                                                     onChange={onChange}
                                                     fileName={'Main'}/>
                                             }
@@ -418,7 +418,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     defaultValue={featureDetails?.images?.main}
                                                     error={errors['images.watch_together']?.message}
                                                     // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
                                                     onChange={onChange}
                                                     fileName={'Watch_together'}/>
                                             }
@@ -432,7 +432,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     defaultValue={featureDetails?.images?.invitation}
                                                     error={errors['images.invitation']?.message}
                                                     // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
                                                     onChange={onChange}
                                                     fileName={'invitation'}/>
                                             }
