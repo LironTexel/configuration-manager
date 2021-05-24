@@ -78,31 +78,27 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
     const isNewFeature = !feature;
     const featureDetails = { ...feature };
     const { handleSubmit, formState: { errors }, control, setValue } = useForm({
-        resolver: yupResolver(CreateFeatureSchema(account))
+        resolver: yupResolver(CreateFeatureSchema())
     });
     const dispatch = useDispatch();
+    const featureId = feature?.id || account.nextFeatureId; // edit existing or set the next index for new features
 
     const onSubmit = (data) => {
-        // console.log({errors});
-        // if (!Object.entries(errors).length) {
-            let featureData = {...data};
-            delete (featureData).originalId;
-            console.log({featureData});
+        let featureData = {...data};
+        console.log({featureData});
 
-            if (isNewFeature) {
-                dispatch(addFeature(account, categoryIndex, featureData));
-            } else if (isFeaturedContent) {
-                dispatch(addFeaturedContent(account, featureData));
-            } else {
-                dispatch(editFeature(account, categoryIndex, featureData, featureIndex));
-            }
-            handleClose();
-        // }
+        if (isNewFeature) {
+            dispatch(addFeature(account, categoryIndex, featureData));
+        } else if (isFeaturedContent) {
+            dispatch(addFeaturedContent(account, featureData));
+        } else {
+            dispatch(editFeature(account, categoryIndex, featureData, featureIndex));
+        }
+        handleClose();
     };
 
     const initForm = () => {
-        setValue( 'id', feature?.id);
-        setValue( 'originalId', feature?.id); // for verification
+        setValue( 'id', featureId);
         setValue( 'title', feature?.title || '');
         setValue( 'description', feature?.description || '');
         setValue( 'url', feature?.url || '');
@@ -123,11 +119,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
     }
 
     initForm();
-
-    // useEffect(() => {
-    //     initForm();
-    //     console.log("initialised form", feature)
-    // }, [feature, initForm])
 
     return (
         <>
@@ -163,12 +154,11 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 className={classes.input}
                                                 label="Feature ID"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.id}
-                                                defaultValue={featureDetails?.id || ''}
+                                                value={featureId}
                                                 helperText={errors.id?.message}
                                                 onChange={onChange}
                                                 type="number"
-                                                disabled={!isNewFeature}
+                                                disabled
                                                 fullWidth
                                                 required
                                             />
@@ -183,7 +173,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 className={classes.input}
                                                 label="Feature title"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.title}
                                                 defaultValue={featureDetails?.title || ''}
                                                 helperText={errors.title?.message}
                                                 onChange={onChange}
@@ -202,7 +191,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 className={classes.input}
                                                 label="Description"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.description}
                                                 defaultValue={featureDetails?.description || ''}
                                                 helperText={errors.description?.message}
                                                 onChange={onChange}
@@ -221,7 +209,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 className={classes.input}
                                                 label="Url"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.url}
                                                 defaultValue={featureDetails?.url || ''}
                                                 helperText={errors.url?.message}
                                                 onChange={onChange}
@@ -240,7 +227,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 className={classes.input}
                                                 label="Subtitles"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.subtitles}
                                                 defaultValue={featureDetails?.subtitles || ''}
                                                 helperText={errors.subtitles?.message}
                                                 onChange={onChange}
@@ -274,12 +260,10 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                     className={classes.input}
                                                     label="Duration"
                                                     variant={INPUT_STYLE_VARIANT}
-                                                    // key={featureDetails.duration}
                                                     defaultValue={featureDetails?.duration || ''}
+                                                    onChange={onChange}
                                                     type="number"
                                                     helperText={errors.duration?.message}
-                                                    onChange={onChange}
-                                                    // fullWidth
                                                     required
                                                 />
                                             }
@@ -313,7 +297,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                             <TextField
                                                 error={!!errors['metadata.cast']}
                                                 className={classes.input}
-                                                // key={featureDetails.metadata?.cast}
                                                 defaultValue={featureDetails?.metadata?.cast || ''}
                                                 label="Cast"
                                                 variant={INPUT_STYLE_VARIANT}
@@ -389,8 +372,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.preview}
                                                     error={errors['images.preview']?.message}
-                                                    // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${featureId}`}
                                                     onChange={onChange}
                                                     fileName={'Preview'}/>
                                             }
@@ -403,8 +385,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.main}
                                                     error={errors['images.main']?.message}
-                                                    // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${featureId}`}
                                                     onChange={onChange}
                                                     fileName={'Main'}/>
                                             }
@@ -417,8 +398,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.main}
                                                     error={errors['images.watch_together']?.message}
-                                                    // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${featureId}`}
                                                     onChange={onChange}
                                                     fileName={'Watch_together'}/>
                                             }
@@ -431,8 +411,7 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 <FileField
                                                     defaultValue={featureDetails?.images?.invitation}
                                                     error={errors['images.invitation']?.message}
-                                                    // className={classes.image}
-                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${feature.id}`}
+                                                    uploadDirectoryPath={`accounts/${account.id}/images/feature-${featureId}`}
                                                     onChange={onChange}
                                                     fileName={'invitation'}/>
                                             }
@@ -471,12 +450,10 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 className={classes.input}
                                                 label="Labels"
                                                 variant={INPUT_STYLE_VARIANT}
-                                                // key={featureDetails.labels}
                                                 defaultValue={featureDetails?.labels || ''}
                                                 helperText={errors.labels?.message}
                                                 onChange={onChange}
                                                 fullWidth
-                                                // required
                                             />
                                         }
                                     />

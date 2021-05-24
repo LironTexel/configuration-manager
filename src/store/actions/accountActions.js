@@ -11,6 +11,7 @@ export const createAccount = (account) => {
             categories: [],
             createdAt: new Date().getTime(),
             createdBy: username,
+            nextFeatureId: 1,
         }).then(() => {
             dispatch({ type: 'CREATE_ACCOUNT', account })
             showSuccessNotification(dispatch, 'Success create account');
@@ -137,6 +138,7 @@ export const addFeature = (account, categoryIndex, feature) => {
         let categories = [ ...account.categories ];
         let category = { ...categories[categoryIndex] };
         let content = [ ...category.content ];
+        const nextFeatureId = account.nextFeatureId + 1;
 
         content.push(feature);
 
@@ -146,9 +148,11 @@ export const addFeature = (account, categoryIndex, feature) => {
         const firestore = getFirebase().firestore();
         firestore.collection('accounts').doc(account.id).update({
             ...account,
+            nextFeatureId,
             categories
         }).then(() => {
-            dispatch({ type: 'ADD_FEATURE', account })
+            dispatch({ type: 'ADD_FEATURE', account });
+
             showSuccessNotification(dispatch, `Success adding feature "${feature.title}"`);
         }).catch((err) => {
             dispatch({ type: 'ADD_FEATURE_ERROR', err })

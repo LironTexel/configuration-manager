@@ -2,19 +2,10 @@ import * as yup from 'yup';
 import {useMemo} from "react";
 import {FEATURE_TYPES} from '../consts'
 
-export const CreateFeatureSchema = (account) =>
+export const CreateFeatureSchema = () =>
     useMemo(() => (
         yup.object().shape({
-            id: yup
-                .number()
-                .required('ID is required')
-                .test("UniqueID", "ID already exists", (value, context) => {
-                    const isDirty = context.parent.originalId !== value;
-                    return !isDirty ||
-                        (!account || !account.categories.find(category =>
-                            category.content.find(feature => feature.id === value))
-                        )
-                }),
+            id: yup.number().required('ID is required'),
             title: yup.string().required('Title is required'),
             type: yup.string().required('Feature type is required').oneOf(Object.values(FEATURE_TYPES), 'Feature type is required'),
             description: yup.string().required('Description is required'),
@@ -38,5 +29,5 @@ export const CreateFeatureSchema = (account) =>
                 invitation: yup.string().url().default(''),
             }),
         })
-    ), [account]);
+    ), []);
 

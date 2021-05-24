@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         '&::before': {
             content: '"Image preview"',
             display: 'block',
-            marginTop: -20,
+            marginTop: -25,
             background: 'white',
             width: 'fit-content',
             padding: '5px'
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '0 auto'
     },
     loaderContainer: {
-        height: '200px',
+        height: '150px',
         width: '100%',
         alignItems: 'center',
         display: 'flex'
