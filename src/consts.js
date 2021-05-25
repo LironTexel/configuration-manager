@@ -29,6 +29,7 @@ export const FEATURE_TAGS = [
     '2020',
     '2021',
     'Animation',
+    'Basketball',
     'Cartoon',
     'Documentary',
     'Drama',
