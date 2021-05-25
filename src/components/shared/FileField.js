@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         border: `1px solid ${Colors.MID_GREY}`,
         borderRadius: '10px',
-        padding: theme.spacing(1, 1, 3),
+        padding: theme.spacing(1, 1, 2),
 
         '&::before': {
             content: '"Image preview"',
