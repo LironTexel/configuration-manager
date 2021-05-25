@@ -231,7 +231,6 @@ const FeatureModal = ({ open , handleClose, categoryIndex, feature, featureIndex
                                                 helperText={errors.subtitles?.message}
                                                 onChange={onChange}
                                                 fullWidth
-                                                required
                                             />
                                         }
                                     />

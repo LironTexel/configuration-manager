@@ -11,7 +11,7 @@ export const CreateFeatureSchema = () =>
             description: yup.string().required('Description is required'),
             url: yup.string().url().required('Feature url is required'),
             duration: yup.number().required().positive().integer().typeError('Duration is required'),
-            subtitles: yup.string().required('Subtitles field is required').default(''),
+            subtitles: yup.string().default(''),
             isAvailable: yup.boolean().required().default(false),
             tags: yup.array().of(yup.string()).default([]),
             // labels: yup.string().required('Labels field is required').default(''),
