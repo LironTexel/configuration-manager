@@ -21,6 +21,7 @@ app.get('/accountIds', async (req, res) => {
     })
 
     res.setHeader('Content-Type', 'application/json');
+    res.set('Access-Control-Allow-Origin', '*'); // allow CORS
     res.status(200).send(JSON.stringify({ accounts }));
 })
 
@@ -58,6 +59,7 @@ app.get('/', async (req, res) => {
     })
 
     res.setHeader('Content-Type', 'application/json');
+    res.set('Access-Control-Allow-Origin', '*'); // allow CORS
     res.status(200).send(JSON.stringify({accounts}));
 })
 
@@ -86,6 +88,7 @@ app.get('/:accountId', async (req, res) => {
         }
     });
     res.setHeader('Content-Type', 'application/json');
+    res.set('Access-Control-Allow-Origin', '*'); // allow CORS
     res.status(200).send(JSON.stringify(result));
 
 })
