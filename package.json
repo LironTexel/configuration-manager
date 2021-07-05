@@ -29,6 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "deployFunctions": "firebase use json-configuration-manager && firebase deploy --only functions",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

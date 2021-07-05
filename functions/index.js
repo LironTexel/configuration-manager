@@ -26,6 +26,20 @@ app.get('/accountIds', async (req, res) => {
     res.status(200).send(JSON.stringify({ accounts }));
 })
 
+// handle timesync requests
+app.get('/timesync', (req, res) => {
+    let data = {
+        receiveTimestamp: new Date()
+    };
+    // data.receiveTimestamp.setSeconds(data.receiveTimestamp.getSeconds() + 5);
+    // res.writeHead(200);
+    data.transmitTimestamp = new Date();
+    // data.transmitTimestamp.setSeconds(data.transmitTimestamp.getSeconds() + 5);
+    // res.status(200).send(JSON.stringify(data));
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(data));
+});
+
 
 exports.accounts = functions.https.onRequest(app);
 
@@ -111,18 +125,6 @@ app.post("/agora/token", (req, res) => {
     res.send({ token });
 });
 
-// handle timesync requests
-app.use('/timesync', (req, res) => {
-    let data = {
-        receiveTimestamp: new Date()
-    };
-    // data.receiveTimestamp.setSeconds(data.receiveTimestamp.getSeconds() + 5);
-    res.writeHead(200);
-
-    data.transmitTimestamp = new Date();
-    // data.transmitTimestamp.setSeconds(data.transmitTimestamp.getSeconds() + 5);
-    res.end(JSON.stringify(data));
-});
 
 const createNotification = (notification => {
   return admin.firestore().collection('notifications')
