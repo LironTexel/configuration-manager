@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
 const express = require('express');
+const agora = require("agora-access-token");
 admin.initializeApp(functions.config().firebase);
 const app = express();
 
@@ -92,6 +93,36 @@ app.get('/:accountId', async (req, res) => {
     res.status(200).send(JSON.stringify(result));
 
 })
+
+// Created by Assaf Tayouri 29/06/2021
+// For generating token of agora authentication
+app.post("/agora/token", (req, res) => {
+    const appId = req.body.appId;
+    const appCertificate = req.body.cert;
+    const channelId = req.body.channelId;
+    const userId = req.body.userId;
+    const role = req.body.isPublisher ? agora.RtcRole.PUBLISHER : agora.RtcRole.SUBSCRIBER;
+
+    const expirationTimeInSeconds = 86400; // 24 hours in seconds
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const expirationTimestamp = currentTimestamp + expirationTimeInSeconds;
+
+    const token = agora.RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelId, userId, role, expirationTimestamp);
+    res.send({ token });
+});
+
+// handle timesync requests
+app.use('/timesync', (req, res) => {
+    let data = {
+        receiveTimestamp: new Date()
+    };
+    // data.receiveTimestamp.setSeconds(data.receiveTimestamp.getSeconds() + 5);
+    res.writeHead(200);
+
+    data.transmitTimestamp = new Date();
+    // data.transmitTimestamp.setSeconds(data.transmitTimestamp.getSeconds() + 5);
+    res.end(JSON.stringify(data));
+});
 
 const createNotification = (notification => {
   return admin.firestore().collection('notifications')
