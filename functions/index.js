@@ -3,6 +3,10 @@ const admin = require('firebase-admin');
 const express = require('express');
 const agora = require("agora-access-token");
 admin.initializeApp(functions.config().firebase);
+let NtpTimeSync = require("ntp-time-sync");
+const timeSync = NtpTimeSync.NtpTimeSync.getInstance();
+timeSync.getTime(); // get first ntp time
+
 const app = express();
 
 // // Create and Deploy Your First Cloud Functions
@@ -26,18 +30,25 @@ app.get('/accountIds', async (req, res) => {
     res.status(200).send(JSON.stringify({ accounts }));
 })
 
-// handle timesync requests
-app.get('/timesync', (req, res) => {
+// handle time sync requests
+app.get('/timesync', async (req, res) => {
+    console.log('start time sync ---------------------------------------------------------------------------');
+    console.log('local date ISO - ' + new Date().toISOString());
+    console.log('local date - ' + new Date());
+    let ntpTime = await timeSync.getTime();
+    console.log('NTP receive object - ', ntpTime);
+    console.log('NTP receive now - ' + ntpTime.now);
+    console.log('NTP receive now ISO - ' + new Date(ntpTime.now).toISOString());
     let data = {
-        receiveTimestamp: new Date()
+        receiveTimestamp: ntpTime.now
     };
     // data.receiveTimestamp.setSeconds(data.receiveTimestamp.getSeconds() + 5);
-    // res.writeHead(200);
-    data.transmitTimestamp = new Date();
+    ntpTime = await timeSync.getTime();
+    console.log('NTP transmit now - ' + ntpTime.now);
+    console.log('NTP transmit now ISO - ' + new Date(ntpTime.now).toISOString());
+    data.transmitTimestamp = ntpTime.now;
     // data.transmitTimestamp.setSeconds(data.transmitTimestamp.getSeconds() + 5);
-    // res.status(200).send(JSON.stringify(data));
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(data));
+    res.status(200).send(JSON.stringify(data));
 });
 
 
